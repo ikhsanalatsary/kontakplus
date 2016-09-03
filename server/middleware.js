@@ -1,7 +1,7 @@
 'use strict';
 
 import auth from 'basic-auth';
-import { admin } from './config/config.js';
+const admin = require('./config/config').admin;
 
 const basicAuth = function (req, res, next) {
   function unauthorized(res) {
