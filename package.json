@@ -8,7 +8,7 @@
     "dev": "npm run jscs && nodemon --exec babel-node server/index.js",
     "build": "babel server --out-dir _server",
     "start": "npm run build && node _server/index.js",
-    "test": "mocha -w --compilers js:babel-register server/test"
+    "test": "mocha -w --timeout 10000 --compilers js:babel-register server/test"
   },
   "author": "Abdul Fattah Ikhsan <ikhsannetwork@gmail.com> (http://ikhsannetwork.com/)",
   "license": "MIT",
@@ -32,7 +32,8 @@
     "jscs": "3.0.7",
     "mocha": "3.0.2",
     "nodemon": "1.10.2",
-    "supertest": "2.0.0"
+    "supertest": "2.0.0",
+    "titlegen": "0.1.2"
   },
   "config": {
     "ghooks": {

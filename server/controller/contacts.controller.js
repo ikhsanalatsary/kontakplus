@@ -45,9 +45,9 @@ exports.update = (req, res, next) => {
     contact.address = String(req.body.address);
     contact.company = String(req.body.company);
 
-    contact.save(err => {
+    contact.save((err, result) => {
       if (err) return res.json(400, err);
-      res.send(200);
+      res.json(200, result);
     });
   });
 };
