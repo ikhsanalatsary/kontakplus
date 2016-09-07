@@ -1,3 +1,5 @@
+'use strict';
+
 import mongoose from 'mongoose';
 import Contact from '../model/contacts.model.js';
 
@@ -15,7 +17,7 @@ exports.create = (req, res, next) => {
 
   contact.save(err => {
     if (err) return handleError(res, err);
-    return res.send(200);
+    return res.sendStatus(200);
   });
 
 };
@@ -23,16 +25,16 @@ exports.create = (req, res, next) => {
 exports.show = (req, res, next) => {
   var contactId = req.params.id;
   Contact.findById(contactId, function (err, contact) {
-    if (err) return res.json(400, err);
-    res.json(200, contact);
+    if (err) return res.status(400).json(err);
+    res.status(200).json(contact);
   });
 };
 
 exports.index = (req, res, next) => {
   Contact.find({}, null, { sort: { created: -1 } }, function (err, contacts) {
-    if (err) return res.status(404);
-    if (contacts.length == 0) return res.status(404);
-    return res.json(contacts);
+    if (err) return res.sendStatus(404);
+    if (contacts.length == 0) return res.sendStatus(404);
+    return res.status(200).json(contacts);
   });
 };
 
@@ -46,19 +48,19 @@ exports.update = (req, res, next) => {
     contact.company = String(req.body.company);
 
     contact.save((err, result) => {
-      if (err) return res.json(400, err);
-      res.json(200, result);
+      if (err) return res.status(400).json(err);
+      res.status(200).json(result);
     });
   });
 };
 
 exports.delete = (req, res, next) => {
   Contact.remove({ _id: req.params.id }, function (err) {
-    if (err) return res.send(400);
-    res.send(200);
+    if (err) return res.sendStatus(400);
+    res.sendStatus(200);
   });
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }

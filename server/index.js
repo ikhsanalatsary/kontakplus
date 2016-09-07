@@ -2,10 +2,11 @@
 
 import express from 'express';
 import morgan from 'morgan';
-import basicAuth from './middleware.js';
 import mongoose from 'mongoose';
+import errorhandler from 'errorhandler';
 import config from './config';
 import bodyParser from 'body-parser';
+import path from 'path';
 
 // Application setup.
 const app = express();
@@ -13,24 +14,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.set('PORT', process.env.PORT || 3000);
-mongoose.connect(config.getDbConnection(), function (err) {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log('Connected to database');
-  }
-});
 
-app.get('/', function (req, res) {
-  res.send("No Authorization");
-});
+mongoose.Promise = global.Promise;
+mongoose.connect(config.getDbConnection())
+  .then(() =>  console.log('Connected to database'))
+  .catch((err) => console.error(err));
 
-app.use(basicAuth);
+const clientPath = path.resolve('client');
+app.use(errorhandler());
+app.use(express.static(clientPath));
 app.use('/api/contacts', require('./routes'));
-
-app.get('/api', function (req, res) {
-  res.status(200).json({ "greet": "Hello from express!" });
-});
 
 app.listen(app.get('PORT'), function () {
   console.log('Example app listening on port 3000!');

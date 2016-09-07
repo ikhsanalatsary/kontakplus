@@ -1,8 +1,12 @@
+'use strict';
+
 import express from 'express';
+import basicAuth from './middleware.js';
 import controller from './controller/contacts.controller';
 
 const router = express.Router();
 
+router.use(basicAuth);
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.post('/', controller.create);

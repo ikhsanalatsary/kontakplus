@@ -53,26 +53,17 @@ describe('Routing', function () {
     it('should get status code 200 with no auth', function (done) {
       request(url)
         .get('/')
-        .set('Accept', 'application/json')
+        .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
         .expect(200, done);
     });
   });
 
-  describe("GET '/api'", function () {
-    it('should get status code 401 if not Unauthorized', function (done) {
+  describe("GET '/api' that not actually route", function () {
+    it('should get status 404', function (done) {
       request(url)
         .get('/api')
-        .set(config.unauthorization)
-        .expect('Content-Type', 'text/plain; charset=utf-8')
-        .expect(401, done);
-    });
-
-    it('should get status 200 if Authorized', function (done) {
-      request(url)
-        .get('/api')
-        .set(config.authorization)
-        .expect('Content-Type', /json/)
-        .expect(200, done);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404, done);
     });
 
     describe("GET '/api/contacts'", function () {
