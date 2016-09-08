@@ -11,12 +11,26 @@ export class ContactsCtrl {
     .then(res => {
       this.contacts = res.data;
     }, handleError);
-
-    function handleError(res) {
-      // swal('Error ', res.status + ' status ' + res.statusText, 'error');
-      alert(res.status + res.statusText);
-    }
   }
 }
 
 ContactsCtrl.$inject = ['$http'];
+
+export class ContactsDetailCtrl {
+  constructor($http, $stateParams) {
+    const Base64Str = btoa(`${admin.user}:${admin.password}`);
+
+    const headers = { "Authorization": "Basic " + Base64Str };
+    $http.get('/api/contacts/' + $stateParams._id, { headers })
+    .then(res => {
+      this.person = res.data;
+    }, handleError);
+  }
+}
+
+ContactsDetailCtrl.$inject = ['$http', '$stateParams'];
+
+function handleError(res) {
+  // swal('Error ', res.status + ' status ' + res.statusText, 'error');
+  alert(res.status + res.statusText);
+}
