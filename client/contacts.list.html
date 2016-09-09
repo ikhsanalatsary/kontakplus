@@ -1,5 +1,15 @@
-<ul>
-  <li ng-repeat="contact in contacts.contacts">
-    <p><a ng-href="#/contacts/{{contact._id}}">{{contact.name}}</a></p>
-  </li>
-</ul>
+<div class="col-md-6 col-md-offset-3">
+  <button type="button" class="btn btn-default" ng-click="contacts.newContact()">Add Contact</button>
+</div>
+<div class="col-md-8">
+  <ul>
+    <li ng-repeat="contact in contacts.contacts">
+      <p>
+        <a ng-href="#/contacts/{{contact._id}}">
+          {{contact.name}}
+        </a>
+        <button type="button" class="destroy" ng-click="contacts.removeContact(contact)">X</button>
+      </p>
+    </li>
+  </ul>
+</div>

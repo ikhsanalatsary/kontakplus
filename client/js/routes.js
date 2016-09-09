@@ -19,6 +19,13 @@ export default function routes($stateProvider, $urlRouterProvider) {
       template: require('../contacts.detail.html'),
       controller: 'ContactsDetailCtrl',
       controllerAs: 'contact',
+    })
+    .state({
+      name: 'contacts.add',
+      url: '/new/contact',
+      template: require('../add.contacts.html'),
+      controller: 'AddContactsCtrl',
+      controllerAs: 'contactModel',
     });
   $urlRouterProvider.when('', 'contacts/list');
   $urlRouterProvider.when('/', 'contacts/list');
