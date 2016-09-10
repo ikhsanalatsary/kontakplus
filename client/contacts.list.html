@@ -1,14 +1,14 @@
 <div class="col-md-6 col-md-offset-3">
-  <button type="button" class="btn btn-default" ng-click="contacts.newContact()">Add Contact</button>
+  <button type="button" class="btn btn-info btn-fab" ng-click="contacts.newContact()"><i class="material-icons">person_add</i></button>
 </div>
-<div class="col-md-8">
+<div class="col-md-6">
   <ul>
     <li ng-repeat="contact in contacts.contacts">
       <p>
         <a ng-href="#/contacts/{{contact._id}}">
           {{contact.name}}
         </a>
-        <button type="button" class="destroy" ng-click="contacts.removeContact(contact)">X</button>
+        <button type="button" class="btn btn-danger" ng-click="contacts.removeContact(contact)"><i class="material-icons">delete</i></button>
       </p>
     </li>
   </ul>

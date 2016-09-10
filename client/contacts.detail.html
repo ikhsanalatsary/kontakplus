@@ -1,10 +1,18 @@
-<p>{{contact.person.name}}</p>
-<p>{{contact.person.title}}</p>
-<p>{{contact.person.email}}</p>
-<p>{{contact.person.phone}}</p>
-<p>
-  <address class="">
-    {{contact.person.address}}
-  </address>
-</p>
-<p>{{contact.person.company}}</p>
+<h4>Contact Detail</h4>
+<div class="col-md-6">
+  <div class="well">
+    <div class="pull-right">
+      <a ng-href="#/contacts/edit/{{contact.person._id}}" type="button" class="btn btn-default"><i class="material-icons">edit</i></a>
+    </div>
+    <p>{{contact.person.name}}</p>
+    <p>{{contact.person.title}}</p>
+    <p>{{contact.person.email}}</p>
+    <p>{{contact.person.phone}}</p>
+    <p>
+      <address class="">
+        {{contact.person.address}}
+      </address>
+    </p>
+    <p>{{contact.person.company}}</p>
+  </div>
+</div>

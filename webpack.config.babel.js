@@ -3,7 +3,7 @@ import path from 'path';
 module.exports = {
 	entry: ['./client/app.js', './client/js/controller.js', './client/js/controller.js'],
 	output: {
-		path: './client',
+		path: './client/dist',
 		publicPath: '',
 		filename: '[name].bundle.js',
 		chunkFilename: '[id].bundle.js',

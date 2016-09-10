@@ -1,3 +1,6 @@
+import 'sweetalert/dist/sweetalert.css';
+import swal from 'sweetalert';
+
 const admin = require('../basic').admin;
 const Base64Str = btoa(`${admin.user}:${admin.password}`);
 const headers = { "Authorization": "Basic " + Base64Str };
@@ -25,6 +28,7 @@ export class ContactsCtrl {
       .then(res => {
         if (res.status == 200) {
           this.getContacts();
+          swal('Terhapus!');
         }
       }, handleError);
   }
@@ -37,7 +41,8 @@ export class ContactsCtrl {
 ContactsCtrl.$inject = ['$http', '$state', '$rootScope'];
 
 export class ContactsDetailCtrl {
-  constructor($http, $stateParams) {
+  constructor($http, $stateParams, $state) {
+    this.$state = $state;
     $http.get('/api/contacts/' + $stateParams._id, { headers })
       .then(res => {
         this.person = res.data;
@@ -47,10 +52,16 @@ export class ContactsDetailCtrl {
 
 ContactsDetailCtrl.$inject = ['$http', '$stateParams'];
 
-export class AddContactsCtrl {
-  constructor($http, $state, $rootScope) {
+export class FormContactsCtrl {
+  constructor($http, $state, $rootScope, $stateParams, contact) {
     this.$http = $http;
     this.$state = $state;
+    this.newRecord = true;
+    if (typeof $stateParams._id !== 'undefined') {
+      this.newRecord = false;
+      this.contact = contact.data;
+    }
+
     this.callContacts = function () {
       $rootScope.$emit("callgetContacts", {});
     };
@@ -59,6 +70,16 @@ export class AddContactsCtrl {
   addContact(contact) {
     var { $http, $state } = this;
     $http.post('/api/contacts/', contact, { headers })
+      .then(res => {
+        console.log(res.data);
+        $state.go('contacts.list');
+        this.callContacts();
+      }, handleError);
+  }
+
+  updateContact(contact) {
+    var { $http, $state } = this;
+    $http.put('/api/contacts/' + contact._id, contact, { headers })
       .then(res => {
         console.log(res.data);
         $state.go('contacts.list');
@@ -76,9 +97,8 @@ export class AddContactsCtrl {
   }
 }
 
-AddContactsCtrl.$inject = ['$http', '$state', '$rootScope'];
+FormContactsCtrl.$inject = ['$http', '$state', '$rootScope', '$stateParams', 'contact'];
 
 function handleError(res) {
-  // swal('Error ', res.status + ' status ' + res.statusText, 'error');
-  alert(res.status + res.statusText);
+  swal('Error ', res.status + ' status ' + res.statusText, 'error');
 }

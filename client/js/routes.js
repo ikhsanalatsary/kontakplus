@@ -1,3 +1,5 @@
+const admin = require('../basic').admin;
+
 export default function routes($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state({
@@ -23,9 +25,27 @@ export default function routes($stateProvider, $urlRouterProvider) {
     .state({
       name: 'contacts.add',
       url: '/new/contact',
-      template: require('../add.contacts.html'),
-      controller: 'AddContactsCtrl',
+      template: require('../form.contacts.html'),
+      controller: 'FormContactsCtrl',
       controllerAs: 'contactModel',
+      resolve: {
+        contact() {
+        },
+      },
+    })
+    .state({
+      name: 'contacts.edit',
+      url: '/edit/:_id',
+      template: require('../form.contacts.html'),
+      controller: 'FormContactsCtrl',
+      controllerAs: 'contactModel',
+      resolve: {
+        contact($http, $stateParams) {
+          const Base64Str = btoa(`${admin.user}:${admin.password}`);
+          const headers = { "Authorization": "Basic " + Base64Str };
+          return $http.get('api/contacts/' + $stateParams._id, { headers });
+        },
+      },
     });
   $urlRouterProvider.when('', 'contacts/list');
   $urlRouterProvider.when('/', 'contacts/list');
