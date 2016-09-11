@@ -1,18 +1,31 @@
 # Problem Set NodeJS
 
-Problem set NodeJS ini adalah Backend aplikasi managemen kontak berbasis REST API dengan ExpressJS dan Mongodb.
+Problem set NodeJS ini adalah aplikasi managemen kontak berbasis REST API dengan MongoDB, Express, AngularJS & NodeJS (MEAN) stack.
 
 Sumber Tantangan dari [codepolitan]
 
+### Todo
+
+* Tambah fitur search
+* Tambah field lain (poto kontak)
+* bisa input lebih dari satu phone, email dan address
+* validasi form
+* Buat Testing di client
+
 ### Depedencies
 
+* Angular
+* Angular-ui
 * Basic-Auth
 * Body-Parser
+* Bootstrap
+* Bootstrap-material-design
 * Btoa
+* Express
 * Lodash
 * Mongoose
 * Morgan
-* [Express]
+* Sweetalert
 * akan ada lagi..
 
 ### Dev-Depedencies
@@ -20,17 +33,23 @@ Sumber Tantangan dari [codepolitan]
 * Babel-cli
 * Babel-Preset-Es2015
 * Chai
+* Css-loader
+* File-loader
 * Ghooks
 * JSCS
+* Json-loader
 * Mocha
 * Nodemon
+* Raw-loader
+* Style-loader
 * Supertest
 * Titlegen
+* Webpack
 * akan ada lagi...
 
 ### Installation
 
-requires [Node.js](https://nodejs.org/) v4+ dan sintaks ES6(ECMAScript 2015) dalam hal ini menggunakan Babel sebagai transpiler language. di lokal repositori menggunakan node versi 6.5.0 yang lebih banyak support ES6.
+Membutuhkan [Node.js](https://nodejs.org/) v4+ dan sintaks ES6(ECMAScript 2015) dalam hal ini menggunakan Babel sebagai transpiler language. di lokal repositori menggunakan node versi 6.5.0 yang lebih banyak support ES6.
 
 Install dependencies dan devDependencies dan jalankan server.
 
@@ -40,7 +59,7 @@ $ npm install -d atau npm i
 $ npm run dev
 ```
 
-### Cara Tes
+### Cara tes
 Setelah server berjalan pada localhost dengan port 3000. maka bisa menjalankan tesnya.
 
 ```sh
