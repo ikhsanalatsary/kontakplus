@@ -9,6 +9,9 @@ export default function routes($stateProvider, $urlRouterProvider) {
       template: require('../contacts.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'contacts',
+      resolve: {
+        person() {},
+      },
     })
     .state({
       name: 'contacts.list',
@@ -19,31 +22,32 @@ export default function routes($stateProvider, $urlRouterProvider) {
       name: 'contacts.detail',
       url: '/:_id',
       template: require('../contacts.detail.html'),
-      controller: 'ContactsDetailCtrl',
+      controller: 'ContactsCtrl',
       controllerAs: 'contact',
+      resolve: {
+        person(ContactServices, $stateParams) {
+          console.log(ContactServices);
+          return ContactServices.findOne($stateParams._id);
+        },
+      },
     })
     .state({
       name: 'contacts.add',
       url: '/new/contact',
       template: require('../form.contacts.html'),
-      controller: 'FormContactsCtrl',
+      controller: 'ContactsCtrl',
       controllerAs: 'contactModel',
-      resolve: {
-        contact() {
-        },
-      },
     })
     .state({
       name: 'contacts.edit',
       url: '/edit/:_id',
       template: require('../form.contacts.html'),
-      controller: 'FormContactsCtrl',
+      controller: 'ContactsCtrl',
       controllerAs: 'contactModel',
       resolve: {
-        contact($http, $stateParams) {
-          const Base64Str = btoa(`${admin.user}:${admin.password}`);
-          const headers = { "Authorization": "Basic " + Base64Str };
-          return $http.get('api/contacts/' + $stateParams._id, { headers });
+        person(ContactServices, $stateParams) {
+          console.log(ContactServices);
+          return ContactServices.findOne($stateParams._id);
         },
       },
     });

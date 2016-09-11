@@ -1,18 +1,28 @@
-<h4>Contact Detail</h4>
-<div class="col-md-6">
-  <div class="well">
+<div class="col-xs-10">
+  <div class="well well-lg">
     <div class="pull-right">
-      <a ng-href="#/contacts/edit/{{contact.person._id}}" type="button" class="btn btn-default"><i class="material-icons">edit</i></a>
+      <a ui-sref="contacts.edit({ _id: contact.person._id })" type="button" class="btn btn-default"><i class="material-icons">edit</i></a>
     </div>
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Contact Detail</h4>
+      </div>
+    </div>
+    <small>Name</small>
     <p>{{contact.person.name}}</p>
+    <small>Title</small>
     <p>{{contact.person.title}}</p>
+    <small>Email</small>
     <p>{{contact.person.email}}</p>
+    <small>Phone</small>
     <p>{{contact.person.phone}}</p>
+    <small>Address</small>
     <p>
-      <address class="">
+      <address>
         {{contact.person.address}}
       </address>
     </p>
+    <small>Company</small>
     <p>{{contact.person.company}}</p>
   </div>
 </div>

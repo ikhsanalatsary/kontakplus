@@ -1,0 +1,7 @@
+.list-contact {
+  color: #509ED2;
+}
+
+.list-contact:hover {
+  text-decoration: none;
+}
