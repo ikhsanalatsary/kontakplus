@@ -8,13 +8,12 @@ Sumber Tantangan dari [codepolitan]
 
 * Tambah fitur search
 * Tambah field lain (poto kontak)
-* bisa input lebih dari satu phone, email dan address
-* validasi form
 * Buat Testing di client
 
 ### Depedencies
 
 * Angular
+* Angular-Messages
 * Angular-ui
 * Basic-Auth
 * Body-Parser
