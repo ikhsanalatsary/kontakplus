@@ -1,72 +1,199 @@
 <div class="page-header">
   <div class="page-title">
-    <h4 ng-if="!contactModel.newRecord">Edit: {{contactModel.person.name}}</h4>
-    <h4 ng-if="contactModel.newRecord">Create Contact</h4>
+    <h4 ng-if="!vm.newRecord">Edit: {{vm.person.name}}</h4>
+    <h4 ng-if="vm.newRecord">Create Contact</h4>
   </div>
 </div>
-<div class="col-xs-10" ng-if="contactModel.newRecord">
-  <form>
+<div class="col-xs-10" ng-if="vm.newRecord">
+  <form name="contactForm">
     <div class="form-group label-floating">
       <label class="control-label" for="InputName">Name</label>
-      <input type="text" class="form-control" ng-model="contact.name">
-    </div>
+      <input type="text" name="name" class="form-control" ng-model="vm.contact.name" ng-minlength="5" ng-maxlength="20" required>
+      <div ng-messages="contactForm.name.$error"
+         ng-if="contactForm.name.$dirty">
+      <div ng-message="required">This field is required</div>
+      <div ng-message="minlength">Name must be over 5 characters</div>
+      <div ng-message="maxlength">Name must not exceed 20 characters</div>
+      </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputTitle">Title</label>
-      <input type="text" class="form-control" ng-model="contact.title">
+      <input type="text" name="title" class="form-control" ng-model="vm.contact.title">
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputEmail">Email</label>
-      <input type="email" class="form-control" ng-model="contact.email">
+      <fieldset  data-ng-repeat="e in vm.email">
+        <div class="col-xs-8 ">
+          <input type="email" name="contactEmail" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
+          <div ng-messages="contactForm.contactEmail.$error">
+            <div ng-message="email">Your email address is invalid</div>
+          </div>
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeEmail($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewEmail()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
-    <div class="form-group label-floating">
+    <div class="form-group">
       <label class="control-label" for="InputPhone">Phone</label>
-      <input type="text" class="form-control" ng-model="contact.phone">
+      <fieldset  data-ng-repeat="phone in vm.phone">
+        <div class="col-xs-2">
+          <select class="form-control" ng-model="phone.option">
+             <option value>Select</option>
+             <option value="Mobile">Mobile</option>
+             <option value="Office">Office</option>
+             <option value="Home">Home</option>
+          </select>
+        </div>
+        <div class="col-xs-6 ">
+          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removePhone($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewPhone()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputAddress">Address</label>
-      <input type="text" class="form-control" ng-model="contact.address">
+      <fieldset  data-ng-repeat="adrs in vm.address">
+        <div class="col-xs-8 ">
+          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeAddress($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewAddress()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputCompany">Company</label>
-      <input type="text" class="form-control" ng-model="contact.company">
+      <input type="text" name="company" class="form-control" ng-model="vm.contact.company">
     </div>
-    <button type="button" class="btn btn-default" ng-click="contactModel.goBack()">Back</button>
-    <button type="button" class="btn btn-danger" ng-click="contactModel.reset(contact)">Reset</button>
-    <button type="submit" class="btn btn-primary" ng-click="contactModel.addContact(contact)">Save</button>
+    <button type="button" class="btn btn-default"
+      ng-click="vm.goBack()">
+      <i class="material-icons">cancel</i>Cancel
+    </button>
+    <button type="button" class="btn btn-danger"
+      ng-click="vm.reset(vm.contact)">
+      <i class="material-icons">clear</i>Clear
+    </button>
+    <button type="submit" class="btn btn-primary"
+      ng-click="vm.addContact()">
+      <i class="material-icons">save</i>Save
+    </button>
   </form>
   <br>
-  <pre>contact = {{contact | json}}</pre>
+  <pre>contact = {{vm.contact | json}}</pre>
+  <pre>phone = {{vm.phone | json}}</pre>
+  <pre>email = {{vm.email | json}}</pre>
+  <pre>address = {{vm.address | json}}</pre>
 </div>
 
-<div class="col-xs-10" ng-if="!contactModel.newRecord">
+<div class="col-xs-10" ng-if="!vm.newRecord">
   <form>
     <div class="form-group label-floating">
       <label class="control-label" for="InputName">Name</label>
-      <input type="text" class="form-control" ng-model="contactModel.person.name">
+      <input type="text" class="form-control" ng-model="vm.person.name">
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputTitle">Title</label>
-      <input type="text" class="form-control" ng-model="contactModel.person.title">
+      <input type="text" class="form-control" ng-model="vm.person.title">
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputEmail">Email</label>
-      <input type="email" class="form-control" ng-model="contactModel.person.email">
+      <fieldset  data-ng-repeat="e in vm.person.email">
+        <div class="col-xs-8 ">
+          <input type="email" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeEmail($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewEmail()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputPhone">Phone</label>
-      <input type="text" class="form-control" ng-model="contactModel.person.phone">
+      <label class="control-label" for="InputPhone">Phone</label>
+      <fieldset  data-ng-repeat="phone in vm.person.phone">
+        <div class="col-xs-2">
+          <select class="form-control" ng-model="phone.option">
+             <option value>Select</option>
+             <option value="Mobile">Mobile</option>
+             <option value="Office">Office</option>
+             <option value="Home">Home</option>
+          </select>
+        </div>
+        <div class="col-xs-6 ">
+          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removePhone($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewPhone()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputAddress">Address</label>
-      <input type="text" class="form-control" ng-model="contactModel.person.address">
+      <fieldset  data-ng-repeat="adrs in vm.person.address">
+        <div class="col-xs-8 ">
+          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeAddress($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewAddress()">
+        <i class="material-icons">add</i>Add More
+      </button>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="InputCompany">Company</label>
-      <input type="text" class="form-control" ng-model="contactModel.person.company">
+      <input type="text" class="form-control" ng-model="vm.person.company">
     </div>
-    <button type="button" class="btn btn-default" ng-click="contactModel.goBack()">Back</button>
-    <button type="submit" class="btn btn-primary" ng-click="contactModel.updateContact(contactModel.person)">Update</button>
+    <button type="button" class="btn btn-default"
+      ng-click="vm.goBack()">
+      <i class="material-icons">cancel</i>Cancel
+    </button>
+    <button type="submit" class="btn btn-primary"
+      ng-click="vm.updateContact()">
+      <i class="material-icons">save</i>Update
+    </button>
   </form>
   <br>
-  <pre>contact = {{contactModel.person | json}}</pre>
+  <pre>contact = {{vm.person | json}}</pre>
 </div>

@@ -5,12 +5,12 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
-  name: String,
-  title: String,
-  email: { type: String, lowercase: true },
-  phone: String,
-  address: String,
-  company: String,
+  name: { type: String, default: '' },
+  title: { type: String, default: '' },
+  email: { type: Array, default: [] },
+  phone: { type: Array, default: [] },
+  address: { type: Array, default: [] },
+  company: { type: String, default: '' },
   created: { type: Date, default: Date.now },
   updated: Date,
 });

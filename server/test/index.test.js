@@ -39,13 +39,31 @@ describe('Routing', function () {
     'My Mom',
     'My Dad',
   ]);
+  const gentype = titlegen.create();
+  gentype.feed([
+    'Mobile',
+    'Work',
+    'Home',
+    'Main',
+    'Work Fax',
+    'Home Fax',
+    'Pager',
+    'Other',
+  ]);
   var contactTitle = generator.next();
+  var option = gentype.next();
   var contact = {
     name: faker.Name.findName(),
     title: contactTitle,
-    email: faker.Internet.email(),
-    phone: faker.PhoneNumber.phoneNumber(),
-    address: faker.Address.streetAddress(),
+    email: [{ email: faker.Internet.email() }, { email: faker.Internet.email() }],
+    phone: [
+      { option, number: faker.PhoneNumber.phoneNumber() },
+      { option, number: faker.PhoneNumber.phoneNumber() },
+    ],
+    address: [
+      { address: faker.Address.streetAddress() },
+      { address: faker.Address.streetAddress() },
+    ],
     company: faker.Company.companyName(),
   };
 
@@ -136,6 +154,12 @@ describe('Routing', function () {
       promise.then(contact => {
         if (contact) {
           contact.name = 'Naruto';
+          var newNumber = { option, number: '354345784532232' };
+          var newEmail = { email: faker.Internet.email() };
+          var newAddress = { address: faker.Address.streetAddress() };
+          contact.phone.push(newNumber);
+          contact.email.push(newEmail);
+          contact.address.push(newAddress);
           request(api)
             .put('/' + contact.id)
             .set(config.authorization)
@@ -170,6 +194,12 @@ describe('Routing', function () {
         if (contact) {
           contact.name = 'Doraemon';
           contact.title = 'Anime';
+          var newNumber = { option, number: '354345784532232' };
+          var newEmail = { email: faker.Internet.email() };
+          var newAddress = { address: faker.Address.streetAddress() };
+          contact.phone.push(newNumber);
+          contact.email.push(newEmail);
+          contact.address.push(newAddress);
           request(api)
             .patch('/' + contact.id)
             .set(config.authorization)

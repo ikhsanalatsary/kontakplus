@@ -26,7 +26,6 @@ export default function routes($stateProvider, $urlRouterProvider) {
       controllerAs: 'contact',
       resolve: {
         person(ContactServices, $stateParams) {
-          console.log(ContactServices);
           return ContactServices.findOne($stateParams._id);
         },
       },
@@ -36,17 +35,16 @@ export default function routes($stateProvider, $urlRouterProvider) {
       url: '/new/contact',
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
-      controllerAs: 'contactModel',
+      controllerAs: 'vm',
     })
     .state({
       name: 'contacts.edit',
       url: '/edit/:_id',
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
-      controllerAs: 'contactModel',
+      controllerAs: 'vm',
       resolve: {
         person(ContactServices, $stateParams) {
-          console.log(ContactServices);
           return ContactServices.findOne($stateParams._id);
         },
       },

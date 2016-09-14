@@ -42,9 +42,9 @@ exports.update = (req, res, next) => {
   Contact.findById(req.params.id, function (err, contact) {
     contact.name = String(req.body.name);
     contact.title = String(req.body.title);
-    contact.email = String(req.body.email);
-    contact.phone = String(req.body.phone);
-    contact.address = String(req.body.address);
+    contact.email = req.body.email;
+    contact.phone = req.body.phone;
+    contact.address = req.body.address;
     contact.company = String(req.body.company);
 
     contact.save((err, result) => {
