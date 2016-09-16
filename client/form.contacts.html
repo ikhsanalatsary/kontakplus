@@ -4,6 +4,97 @@
     <h4 ng-if="vm.newRecord">Create Contact</h4>
   </div>
 </div>
+
+<div class="col-xs-10" ng-if="!vm.newRecord">
+  <form>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputName">Name</label>
+      <input type="text" class="form-control" ng-model="vm.person.name">
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputTitle">Title</label>
+      <input type="text" class="form-control" ng-model="vm.person.title">
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputEmail">Email</label>
+      <fieldset  data-ng-repeat="e in vm.person.email">
+        <div class="col-xs-8 ">
+          <input type="email" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeEmail($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewEmail()">
+        <i class="material-icons">add</i>Add More
+      </button>
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputPhone">Phone</label>
+      <label class="control-label" for="InputPhone">Phone</label>
+      <fieldset  data-ng-repeat="phone in vm.person.phone">
+        <div class="col-xs-2">
+          <select class="form-control" ng-model="phone.option">
+             <option value>Select</option>
+             <option value="Mobile">Mobile</option>
+             <option value="Office">Office</option>
+             <option value="Home">Home</option>
+          </select>
+        </div>
+        <div class="col-xs-6 ">
+          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removePhone($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewPhone()">
+        <i class="material-icons">add</i>Add More
+      </button>
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputAddress">Address</label>
+      <fieldset  data-ng-repeat="adrs in vm.person.address">
+        <div class="col-xs-8 ">
+          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
+        </div>
+          <div class="col-xs-2">
+            <button class="btn btn-danger btn-xs" ng-hide="$first"
+              ng-click="vm.removeAddress($index)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+      </fieldset>
+      <button class="btn btn-info btn-xs"
+        ng-click="vm.addNewAddress()">
+        <i class="material-icons">add</i>Add More
+      </button>
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label" for="InputCompany">Company</label>
+      <input type="text" class="form-control" ng-model="vm.person.company">
+    </div>
+    <button type="button" class="btn btn-default"
+      ng-click="vm.goBack()">
+      <i class="material-icons">cancel</i>Cancel
+    </button>
+    <button type="submit" class="btn btn-primary"
+      ng-click="vm.updateContact()">
+      <i class="material-icons">save</i>Update
+    </button>
+  </form>
+  <br>
+  <pre>contact = {{vm.person | json}}</pre>
+</div>
+
 <div class="col-xs-10" ng-if="vm.newRecord">
   <form name="contactForm">
     <div class="form-group label-floating">
@@ -106,94 +197,4 @@
   <pre>phone = {{vm.phone | json}}</pre>
   <pre>email = {{vm.email | json}}</pre>
   <pre>address = {{vm.address | json}}</pre>
-</div>
-
-<div class="col-xs-10" ng-if="!vm.newRecord">
-  <form>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputName">Name</label>
-      <input type="text" class="form-control" ng-model="vm.person.name">
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputTitle">Title</label>
-      <input type="text" class="form-control" ng-model="vm.person.title">
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputEmail">Email</label>
-      <fieldset  data-ng-repeat="e in vm.person.email">
-        <div class="col-xs-8 ">
-          <input type="email" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeEmail($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewEmail()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputPhone">Phone</label>
-      <label class="control-label" for="InputPhone">Phone</label>
-      <fieldset  data-ng-repeat="phone in vm.person.phone">
-        <div class="col-xs-2">
-          <select class="form-control" ng-model="phone.option">
-             <option value>Select</option>
-             <option value="Mobile">Mobile</option>
-             <option value="Office">Office</option>
-             <option value="Home">Home</option>
-          </select>
-        </div>
-        <div class="col-xs-6 ">
-          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removePhone($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewPhone()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputAddress">Address</label>
-      <fieldset  data-ng-repeat="adrs in vm.person.address">
-        <div class="col-xs-8 ">
-          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeAddress($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewAddress()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputCompany">Company</label>
-      <input type="text" class="form-control" ng-model="vm.person.company">
-    </div>
-    <button type="button" class="btn btn-default"
-      ng-click="vm.goBack()">
-      <i class="material-icons">cancel</i>Cancel
-    </button>
-    <button type="submit" class="btn btn-primary"
-      ng-click="vm.updateContact()">
-      <i class="material-icons">save</i>Update
-    </button>
-  </form>
-  <br>
-  <pre>contact = {{vm.person | json}}</pre>
 </div>

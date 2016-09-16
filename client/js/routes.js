@@ -8,7 +8,7 @@ export default function routes($stateProvider, $urlRouterProvider) {
       url: '/contacts',
       template: require('../contacts.html'),
       controller: 'ContactsCtrl',
-      controllerAs: 'contacts',
+      controllerAs: '$this',
       resolve: {
         person() {},
       },

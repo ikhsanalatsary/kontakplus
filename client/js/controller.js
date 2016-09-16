@@ -12,6 +12,8 @@ export default class ContactsCtrl {
       this.person = person.data;
     }
 
+    this.search = false;
+    this.superhero = [];
     this.contact = {};
     this.phone = [{ option: 'Mobile' }];
     this.email = [{}];
@@ -31,7 +33,7 @@ export default class ContactsCtrl {
     this.getContacts();
   }
 
-  removeContact(contact) {
+  removeContact(contactId) {
     swal({
         title: 'Are you sure?',
         text: 'You will delete this contact!',
@@ -45,7 +47,7 @@ export default class ContactsCtrl {
     },
       (isConfirm) => {
         if (isConfirm) {
-          this.ContactServices.delete(contact._id)
+          this.ContactServices.delete(contactId)
             .then(res => {
               if (res.status == 200) {
                 this.getContacts();
@@ -137,6 +139,38 @@ export default class ContactsCtrl {
       this.person.address.splice(item, 1);
     }
 
+  }
+
+  checkAll() {
+    this.superhero = this.contacts.map((item) => item._id);
+  }
+
+  uncheckAll() {
+    this.superhero = [];
+  }
+
+  deleteAll() {
+    var arr = this.superhero;
+    if (arr.length > 1) {
+      return arr.forEach(contactId => {
+        this.ContactServices.delete(contactId)
+          .then(res => {
+            if (res.status == 200) {
+              this.getContacts();
+            }
+          }, handleError)
+          .finally(() => this.superhero = []);
+      });
+    }
+  }
+
+  searchBtn() {
+    this.search = true;
+  }
+
+  removeSearch() {
+    this.search = false;
+    this.searchContact = '';
   }
 
   reset(contact) {
