@@ -1,43 +1,71 @@
-<div class="col-xs-10">
-  <div class="well well-lg">
-    <div class="pull-left">
-      <button type="button" class="btn btn-default" ui-sref="contacts.list">
-        <i class="material-icons">arrow_back</i>
-      </button>
-    </div>
-    <div class="pull-right">
-      <a ui-sref="contacts.edit({ _id: contact.person._id })"
-        type="button" class="btn btn-default">
-        <i class="material-icons">edit</i>
-      </a>
-    </div>
-    <br><br>
-    <div class="page-header">
-      <div class="page-title">
-        <h4>Contact Detail</h4>
-      </div>
-    </div>
-    <small>Name</small>
-    <p>{{contact.person.name}}</p>
-    <small>Title</small>
-    <p>{{contact.person.title}}</p>
-    <small>Email</small>
-    <ul class="list-unstyled" ng-repeat="e in contact.person.email">
-      <li>{{e.email}}</li>
-    </ul>
-    <small>Phone</small>
-    <ul class="list-unstyled" ng-repeat="phone in contact.person.phone">
-      <li>{{phone.option}}: {{phone.number}}</li>
-    </ul>
-    <small>Address</small>
-    <ul class="list-unstyled" ng-repeat="adrs in contact.person.address">
-      <li>
-        <address>
-          {{adrs.address}}
-        </address>
-      </li>
-    </ul>
-    <small>Company</small>
-    <p>{{contact.person.company}}</p>
+<header md-page-header>
+  <div md-header-picture
+    style="background-image:url(http://www.shortday.in/wp-content/uploads/2015/06/Katy-Perry-wallpaper.jpg)">
   </div>
-</div>
+  <md-toolbar scroll>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="contact.goBack()" class="md-tools mini" aria-label="Go Back">
+        <md-icon md-font-set="material-icons">arrow_back</md-icon>
+      </md-button>
+      <h2 md-header-title flex>{{contact.person.name}}</h2>
+      <md-button ui-sref="contacts.edit({ _id: contact.person._id })" class="md-tools mini" aria-label="Edit Contact">
+        <md-icon md-font-set="material-icons">edit</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <div class="main-fab">
+    <md-button md-font-set="material-icons" aria-label="Float Action Button" class="md-fab md-accent">
+     <md-icon md-font-set="material-icons">star_border</md-icon>
+    </md-button>
+  </div>
+</header>
+<br><br><br>
+<section id="page-section">
+  <md-content flex layout-padding>
+    <md-list class="fixedRows">
+      <md-list-item ng-repeat="phone in contact.person.phone" class="md-3-line contact-item noright">
+        <md-icon ng-if="contact.person.phone" class="md-primary md-hue-2 left"
+          md-font-set="material-icons">phone</md-icon>
+        <div class="md-tile-content">
+          <h3>{{phone.number}}</h3>
+          <p class="muted">{{phone.option}}</p>
+        </div>
+      </md-list-item>
+      <md-divider ng-if="contact.person.phone"></md-divider>
+      <md-list-item>
+        <md-icon ng-if="contact.person.title" class="md-primary md-hue-2 left"
+          md-font-set="material-icons">title</md-icon>
+        <div class="md-tile-content">
+          <h3>{{contact.person.title}}</h3>
+        </div>
+      </md-list-item>
+      <md-divider ng-if="contact.person.title"></md-divider>
+      <md-list-item ng-repeat="e in contact.person.email" class="md-3-line contact-item noright">
+        <md-icon ng-if="contact.person.email" class="md-primary md-hue-2 left"
+          md-font-set="material-icons">email</md-icon>
+        <div class="md-tile-content">
+          <h3>{{e.email}}</h3>
+          <p class="muted">{{e.option}}</p>
+        </div>
+      </md-list-item>
+      <md-divider ng-if="contact.person.email"></md-divider>
+      <md-list-item ng-repeat="adrs in contact.person.address" class="md-3-line contact-item noright">
+        <md-icon ng-if="contact.person.address" class="md-primary md-hue-2 left"
+          md-font-set="material-icons">room</md-icon>
+        <div class="md-tile-content">
+          <h3>{{adrs.address}}</h3>
+          <p class="muted">{{adrs.option}}</p>
+        </div>
+      </md-list-item>
+      <md-divider ng-if="contact.person.address"></md-divider>
+      <md-list-item>
+        <md-icon ng-if="contact.person.company" class="md-primary md-hue-2 left"
+          md-font-set="material-icons">work</md-icon>
+        <div class="md-tile-content">
+          <h3>{{contact.person.company}}</h3>
+        </div>
+      </md-list-item>
+      <md-divider ng-if="contact.person.company"></md-divider>
+    </md-list>
+  </md-content>
+</section>

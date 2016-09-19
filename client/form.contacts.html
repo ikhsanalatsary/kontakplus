@@ -1,200 +1,279 @@
-<div class="page-header">
-  <div class="page-title">
-    <h4 ng-if="!vm.newRecord">Edit: {{vm.person.name}}</h4>
-    <h4 ng-if="vm.newRecord">Create Contact</h4>
-  </div>
-</div>
+<!-- Edit form -->
+<div ng-if="!vm.newRecord">
+  <md-toolbar md-scroll-shrink>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="vm.goBack()" class="md-tools mini" aria-label="Go Back">
+        <md-icon md-font-set="material-icons">arrow_back</md-icon>
+      </md-button>
+      <h2 md-header-title flex>Edit {{vm.person.name}}</h2>
+    </div>
+  </md-toolbar>
+  <br><br><br>
+  <md-content layout-padding>
+    <form name="contactForm">
+      <!-- name input -->
+      <md-input-container class="md-block">
+        <label>Name</label>
+        <md-icon md-font-set="material-icons">person</md-icon>
+        <input name="name" ng-model="vm.person.name">
+      </md-input-container>
 
-<div class="col-xs-10" ng-if="!vm.newRecord">
-  <form>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputName">Name</label>
-      <input type="text" class="form-control" ng-model="vm.person.name">
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputTitle">Title</label>
-      <input type="text" class="form-control" ng-model="vm.person.title">
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputEmail">Email</label>
-      <fieldset  data-ng-repeat="e in vm.person.email">
-        <div class="col-xs-8 ">
-          <input type="email" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeEmail($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewEmail()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputPhone">Phone</label>
-      <label class="control-label" for="InputPhone">Phone</label>
-      <fieldset  data-ng-repeat="phone in vm.person.phone">
-        <div class="col-xs-2">
-          <select class="form-control" ng-model="phone.option">
-             <option value>Select</option>
-             <option value="Mobile">Mobile</option>
-             <option value="Office">Office</option>
-             <option value="Home">Home</option>
-          </select>
-        </div>
-        <div class="col-xs-6 ">
-          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removePhone($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewPhone()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputAddress">Address</label>
-      <fieldset  data-ng-repeat="adrs in vm.person.address">
-        <div class="col-xs-8 ">
-          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeAddress($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewAddress()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputCompany">Company</label>
-      <input type="text" class="form-control" ng-model="vm.person.company">
-    </div>
-    <button type="button" class="btn btn-default"
-      ng-click="vm.goBack()">
-      <i class="material-icons">cancel</i>Cancel
-    </button>
-    <button type="submit" class="btn btn-primary"
-      ng-click="vm.updateContact()">
-      <i class="material-icons">save</i>Update
-    </button>
-  </form>
-  <br>
-  <pre>contact = {{vm.person | json}}</pre>
-</div>
+      <!-- title input -->
+      <md-input-container class="md-block">
+        <label>Title</label>
+        <md-icon md-font-set="material-icons">title</md-icon>
+        <input ng-model="vm.person.title">
+      </md-input-container>
 
-<div class="col-xs-10" ng-if="vm.newRecord">
-  <form name="contactForm">
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputName">Name</label>
-      <input type="text" name="name" class="form-control" ng-model="vm.contact.name" ng-minlength="5" ng-maxlength="20" required>
-      <div ng-messages="contactForm.name.$error"
-         ng-if="contactForm.name.$dirty">
-      <div ng-message="required">This field is required</div>
-      <div ng-message="minlength">Name must be over 5 characters</div>
-      <div ng-message="maxlength">Name must not exceed 20 characters</div>
+      <!-- phone input -->
+      <div layout="row" ng-repeat="phone in vm.person.phone">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">phone</md-icon>
+          <md-select name="option" ng-model="phone.option">
+            <md-option value="Mobile">Mobile</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Home">Home</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Phone number</label>
+          <input name="phoneNumber" ng-model="phone.number">
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removePhone($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
       </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputTitle">Title</label>
-      <input type="text" name="title" class="form-control" ng-model="vm.contact.title">
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more" ng-click="vm.addNewPhone()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- email input -->
+      <div layout="row" ng-repeat="e in vm.person.email">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">email</md-icon>
+          <md-select name="option" ng-model="e.option">
+            <md-option value="Personal">Personal</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Other">Other</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Email</label>
+          <input type="email" name="email" ng-model="e.email">
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removeEmail($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more" ng-click="vm.addNewEmail()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- address input -->
+      <div layout="row" ng-repeat="alm in vm.person.address">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">room</md-icon>
+          <md-select name="option" ng-model="alm.option">
+            <md-option value="Home">Home</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Other">Other</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Address</label>
+          <input name="address" ng-model="alm.address">
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removeAddress($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more" ng-click="vm.addNewAddress()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- company input -->
+      <md-input-container class="md-block">
+        <label>Company</label>
+        <md-icon md-font-set="material-icons">work</md-icon>
+        <input ng-model="vm.person.company">
+      </md-input-container>
+
+      <div>
+        <md-button type="submit" ng-click="vm.updateContact()">Save</md-button>
+      </div>
+
+    </form>
+
+    <br>
+    <pre>contact = {{vm.person | json}}</pre>
+  </md-content>
+</div>
+
+<!-- Create form -->
+<div ng-if="vm.newRecord">
+  <md-toolbar md-scroll-shrink>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="vm.goBack()" class="md-tools mini" aria-label="Go Back">
+        <md-icon md-font-set="material-icons">arrow_back</md-icon>
+      </md-button>
+      <h2 md-header-title flex>Add new contact</h2>
     </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputEmail">Email</label>
-      <fieldset  data-ng-repeat="e in vm.email">
-        <div class="col-xs-8 ">
-          <input type="email" name="contactEmail" class="form-control" ng-model="e.email" name="" placeholder="Enter email">
-          <div ng-messages="contactForm.contactEmail.$error">
-            <div ng-message="email">Your email address is invalid</div>
-          </div>
+  </md-toolbar>
+  <br><br><br>
+  <md-content layout-padding>
+    <form name="contactForm">
+      <!-- name input -->
+      <md-input-container class="md-block">
+        <label>Name</label>
+        <md-icon md-font-set="material-icons">person</md-icon>
+        <input minlength="5" md-maxlength="30" required md-no-asterisk name="name"
+          ng-model="vm.contact.name">
+        <div ng-messages="contactForm.name.$error">
+          <div ng-message="required">This is required.</div>
+          <div ng-message="minlength">Name must be over 5 characters.</div>
+          <div ng-message="md-maxlength">Name must not exceed 30 characters.</div>
         </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeEmail($index)">
-              <i class="material-icons">clear</i>
-            </button>
+      </md-input-container>
+
+      <!-- title input -->
+      <md-input-container class="md-block">
+        <label>Title</label>
+        <md-icon md-font-set="material-icons">title</md-icon>
+        <input ng-model="vm.contact.title">
+      </md-input-container>
+
+      <!-- phone input -->
+      <div layout="row" ng-repeat="phone in vm.phone">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">phone</md-icon>
+          <md-select name="option" ng-model="phone.option">
+            <md-option value="Mobile">Mobile</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Home">Home</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Phone number</label>
+          <input name="phoneNumber" ng-model="phone.number">
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removePhone($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more" ng-click="vm.addNewPhone()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- email input -->
+      <div layout="row" ng-repeat="e in vm.email">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">email</md-icon>
+          <md-select name="option" ng-model="e.option">
+            <md-option value="Personal">Personal</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Other">Other</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Email</label>
+          <input type="email" name="email" ng-model="e.email"
+            minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/">
+          <div ng-messages="contactForm.email.$error" role="alert">
+            <div ng-message-exp="['minlength', 'maxlength', 'pattern']">
+              Your email must be between 10 and 100 characters long and look like an e-mail address.
+            </div>
           </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewEmail()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="InputPhone">Phone</label>
-      <fieldset  data-ng-repeat="phone in vm.phone">
-        <div class="col-xs-2">
-          <select class="form-control" ng-model="phone.option">
-             <option value>Select</option>
-             <option value="Mobile">Mobile</option>
-             <option value="Office">Office</option>
-             <option value="Home">Home</option>
-          </select>
-        </div>
-        <div class="col-xs-6 ">
-          <input type="text" class="form-control" ng-model="phone.number" name="" placeholder="Enter phone number">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removePhone($index)">
-              <i class="material-icons">clear</i>
-            </button>
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removeEmail($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more" ng-click="vm.addNewEmail()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- address input -->
+      <div layout="row" ng-repeat="alm in vm.address">
+        <md-input-container flex="50">
+          <label></label>
+          <md-icon md-font-set="material-icons">room</md-icon>
+          <md-select name="option" ng-model="alm.option">
+            <md-option value="Home">Home</md-option>
+            <md-option value="Work">Work</md-option>
+            <md-option value="Other">Other</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Address</label>
+          <input name="address" ng-model="alm.address"
+            minlength="10" maxlength="200">
+          <div ng-messages="contactForm.address.$error" role="alert">
+            <div ng-message-exp="['minlength', 'maxlength']">
+              Your address must be between 10 and 200 characters long.
+            </div>
           </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewPhone()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputAddress">Address</label>
-      <fieldset  data-ng-repeat="adrs in vm.address">
-        <div class="col-xs-8 ">
-          <input type="text" class="form-control" ng-model="adrs.address" name="" placeholder="Enter address">
-        </div>
-          <div class="col-xs-2">
-            <button class="btn btn-danger btn-xs" ng-hide="$first"
-              ng-click="vm.removeAddress($index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-      </fieldset>
-      <button class="btn btn-info btn-xs"
-        ng-click="vm.addNewAddress()">
-        <i class="material-icons">add</i>Add More
-      </button>
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label" for="InputCompany">Company</label>
-      <input type="text" name="company" class="form-control" ng-model="vm.contact.company">
-    </div>
-    <button type="button" class="btn btn-default"
-      ng-click="vm.goBack()">
-      <i class="material-icons">cancel</i>Cancel
-    </button>
-    <button type="button" class="btn btn-danger"
-      ng-click="vm.reset(vm.contact)">
-      <i class="material-icons">clear</i>Clear
-    </button>
-    <button type="submit" class="btn btn-primary"
-      ng-click="vm.addContact()">
-      <i class="material-icons">save</i>Save
-    </button>
-  </form>
-  <br>
-  <pre>contact = {{vm.contact | json}}</pre>
-  <pre>phone = {{vm.phone | json}}</pre>
-  <pre>email = {{vm.email | json}}</pre>
-  <pre>address = {{vm.address | json}}</pre>
+          <md-icon class="md-warn search" ng-hide="$first"
+            ng-click="vm.removeAddress($index)" md-font-set="material-icons">
+            clear
+          </md-icon>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end">
+        <md-button class="md-accent md-hue-3" aria-label="Add more"
+          ng-click="vm.addNewAddress()">
+          <md-icon md-font-set="material-icons">add</md-icon>
+          Add more
+        </md-button>
+      </div>
+
+      <!-- company input -->
+      <md-input-container class="md-block">
+        <label>Company</label>
+        <md-icon md-font-set="material-icons">work</md-icon>
+        <input ng-model="vm.contact.company">
+      </md-input-container>
+
+      <div>
+        <md-button type="submit" ng-click="vm.addContact()">Save</md-button>
+      </div>
+
+    </form>
+
+    <br>
+    <pre>contact = {{vm.contact | json}}</pre>
+    <pre>phone = {{vm.phone | json}}</pre>
+    <pre>email = {{vm.email | json}}</pre>
+    <pre>address = {{vm.address | json}}</pre>
+  </md-content>
 </div>

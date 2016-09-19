@@ -27,7 +27,8 @@ describe('Routing', function () {
       "WWW-Authenticate": "Basic realm=Authorization Required",
     },
   };
-  const generator = titlegen.create();
+
+  var generator = titlegen.create();
   generator.feed([
     'My Love',
     'Soulmate',
@@ -39,30 +40,46 @@ describe('Routing', function () {
     'My Mom',
     'My Dad',
   ]);
-  const gentype = titlegen.create();
+
+  var gentype = titlegen.create();
   gentype.feed([
     'Mobile',
     'Work',
     'Home',
-    'Main',
-    'Work Fax',
-    'Home Fax',
-    'Pager',
+  ]);
+
+  var etype = titlegen.create();
+  etype.feed([
+    'Personal',
+    'Work',
     'Other',
   ]);
+
+  var adrtype = titlegen.create();
+  adrtype.feed([
+    'Home',
+    'Work',
+    'Other',
+  ]);
+
   var contactTitle = generator.next();
   var option = gentype.next();
+  var option2 = etype.next();
+  var option3 = adrtype.next();
   var contact = {
     name: faker.Name.findName(),
     title: contactTitle,
-    email: [{ email: faker.Internet.email() }, { email: faker.Internet.email() }],
+    email: [
+      { option: option2, email: faker.Internet.email() },
+      { option: option2, email: faker.Internet.email() },
+    ],
     phone: [
       { option, number: faker.PhoneNumber.phoneNumber() },
       { option, number: faker.PhoneNumber.phoneNumber() },
     ],
     address: [
-      { address: faker.Address.streetAddress() },
-      { address: faker.Address.streetAddress() },
+      { option: option3, address: faker.Address.streetAddress() },
+      { option: option3, address: faker.Address.streetAddress() },
     ],
     company: faker.Company.companyName(),
   };
@@ -153,7 +170,7 @@ describe('Routing', function () {
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = 'Naruto';
+          contact.name = 'Jhonny Depp';
           var newNumber = { option, number: '354345784532232' };
           var newEmail = { email: faker.Internet.email() };
           var newAddress = { address: faker.Address.streetAddress() };
@@ -169,7 +186,7 @@ describe('Routing', function () {
             .end((err, res) => {
               if (err) return done(err);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.have.property('name').to.equal('Naruto');
+              expect(res.body).to.have.property('name').to.equal('Jhonny Depp');
               expect(res.body).to.have.property('title');
               expect(res.body).to.have.property('email');
               expect(res.body).to.have.property('phone');
@@ -192,8 +209,8 @@ describe('Routing', function () {
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = 'Doraemon';
-          contact.title = 'Anime';
+          contact.name = 'Katy Perry';
+          contact.title = 'My Idol';
           var newNumber = { option, number: '354345784532232' };
           var newEmail = { email: faker.Internet.email() };
           var newAddress = { address: faker.Address.streetAddress() };
@@ -209,8 +226,8 @@ describe('Routing', function () {
             .end((err, res) => {
               if (err) return done(err);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.have.property('name').to.equal('Doraemon');
-              expect(res.body).to.have.property('title').to.equal('Anime');
+              expect(res.body).to.have.property('name').to.equal('Katy Perry');
+              expect(res.body).to.have.property('title').to.equal('My Idol');
               expect(res.body).to.have.property('email');
               expect(res.body).to.have.property('phone');
               expect(res.body).to.have.property('address');

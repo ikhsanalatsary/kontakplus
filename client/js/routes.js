@@ -1,12 +1,10 @@
-const admin = require('../basic').admin;
-
 export default function routes($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state({
       name: 'contacts',
       abstract: true,
       url: '/contacts',
-      template: require('../contacts.html'),
+      template: '<ui-view/>',
       controller: 'ContactsCtrl',
       controllerAs: '$this',
       resolve: {

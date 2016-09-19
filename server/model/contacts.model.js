@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
-  name: { type: String, default: '' },
+  name: { type: String, required: true, default: '' },
   title: { type: String, default: '' },
   email: { type: Array, default: [] },
   phone: { type: Array, default: [] },

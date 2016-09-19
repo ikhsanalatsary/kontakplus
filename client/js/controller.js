@@ -12,12 +12,13 @@ export default class ContactsCtrl {
       this.person = person.data;
     }
 
+    this.value = false;
     this.search = false;
     this.superhero = [];
     this.contact = {};
     this.phone = [{ option: 'Mobile' }];
-    this.email = [{}];
-    this.address = [{}];
+    this.email = [{ option: 'Personal' }];
+    this.address = [{ option: 'Home' }];
 
     this.getContacts = () => {
       this.ContactServices.find()
@@ -83,6 +84,7 @@ export default class ContactsCtrl {
       .then(res => {
         console.log(res.data);
         $state.go('contacts.list');
+        this.$rootScope.$emit('findContacts', {});
       }, handleError);
   }
 
@@ -107,9 +109,9 @@ export default class ContactsCtrl {
 
   addNewEmail() {
     if (this.newRecord) {
-      this.email.push({});
+      this.email.push({ 'option': 'Personal' });
     } else {
-      this.person.email.push({});
+      this.person.email.push({ 'option': 'Personal' });
     }
 
   }
@@ -125,9 +127,9 @@ export default class ContactsCtrl {
 
   addNewAddress() {
     if (this.newRecord) {
-      this.address.push({});
+      this.address.push({ 'option': 'Home' });
     } else {
-      this.person.address.push({});
+      this.person.address.push({ 'option': 'Home' });
     }
 
   }
@@ -141,8 +143,12 @@ export default class ContactsCtrl {
 
   }
 
-  checkAll() {
-    this.superhero = this.contacts.map((item) => item._id);
+  checkAll(checked) {
+    if (checked) {
+      this.superhero = this.contacts.map((item) => item._id);
+    } else {
+      this.uncheckAll();
+    }
   }
 
   uncheckAll() {
@@ -171,6 +177,10 @@ export default class ContactsCtrl {
   removeSearch() {
     this.search = false;
     this.searchContact = '';
+  }
+
+  goDetail(_id) {
+    this.$state.go('contacts.detail', { _id });
   }
 
   reset(contact) {

@@ -1,7 +1,12 @@
 import path from 'path';
 
 module.exports = {
-	entry: ['./client/app.js', './client/js/controller.js', './client/js/controller.js'],
+	entry: [
+		'./client/app.js',
+		'./client/js/controller.js',
+		'./client/js/controller.js',
+		'./client/js/directives.js',
+	],
 	output: {
 		path: './client/dist',
 		publicPath: '',

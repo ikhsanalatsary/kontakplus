@@ -1,65 +1,55 @@
-<div class="col-xs-2 pull-right">
-  <button type="button" class="btn btn-info btn-fab" ng-click="$this.newContact()"><i class="material-icons">person_add</i></button>
-  <button type="button" class="btn btn-info btn-fab" ng-click="$this.checkAll()">Check All</button>
-  <button type="button" class="btn btn-info btn-fab" ng-click="$this.uncheckAll()">Unchek</button>
-  <div ng-if="$this.superhero.length > 1">
-    <button type="button" class="btn btn-info btn-fab" ng-click="$this.deleteAll()">Delete All</button>
+<md-toolbar md-scroll-shrink class="md-primary">
+  <div class="md-toolbar-tools">
+    <h2 class="md-flex">Kontak++</h2>
   </div>
-</div>
-<div ng-if="$this.search">
-  <div class="col-xs-8">
-    <form>
-      <input type="text" class="form-control" ng-model="$this.searchContact" placeholder="Search">
-    </form>
-  </div>
-  <div class="col-xs-2">
-    <button class="btn btn-danger" ng-click="$this.removeSearch()">
-      <i class="material-icons">clear</i>
-    </button>
-  </div>
-</div>
-<div class="col-xs-2" ng-if="!$this.search">
-  <button type="button" class="btn btn-xs btn-default" ng-click="$this.searchBtn()">
-    <i class="material-icons">search</i>
-  </button>
-</div>
-<div class="col-xs-10">
-  <div class="panel panel-info">
-    <div class="panel-heading" ng-if="$this.superhero.length >= 1">
-      <small>{{$this.superhero.length}} contact(s) selected</small>
+</md-toolbar>
+<md-button ng-click="$this.newContact()" class="md-fab md-fab-bottom-right md-accent fixed" aria-label="Person">
+  <md-tooltip md-direction="left">
+    Create Contact
+  </md-tooltip>
+  <md-icon md-font-set="material-icons">person_add</md-icon>
+</md-button>
+<md-button ng-if="$this.superhero.length > 1" ng-click="$this.deleteAll()"
+  class="md-fab md-fab-bottom-right md-warn fixed" aria-label="Delete All">
+  <md-tooltip md-direction="left">
+    Delete All
+  </md-tooltip>
+  <md-icon md-font-set="material-icons">delete</md-icon>
+</md-button>
+<br><br><br>
+<md-content flex layout-padding class="list-content">
+  <md-list class="fixedRows">
+    <md-subheader class="md-no-sticky">
+      <md-checkbox aria-label="Select All" ng-model="$this.value" ng-change="$this.checkAll($this.value)"></md-checkbox>
+      Contacts
+    </md-subheader>
+    <div ng-if="!$this.search" layout="row" layout-align="end center">
+      <md-button aria-label="Search" ng-click="$this.searchBtn()">
+        <md-tooltip md-direction="left">
+          Search
+        </md-tooltip>
+        <md-icon md-font-set="material-icons"> search </md-icon>
+      </md-button>
     </div>
-    <table class="table table-hover">
-      <tbody>
-        <tr ng-repeat="contact in $this.contacts | filter: $this.searchContact">
-          <td>
-            <!-- <label class="checkbox"> -->
-              <input type="checkbox" checklist-model="$this.superhero" checklist-value="contact._id">
-            <!-- </label> -->
-          </td>
-          <td>
-            <a class="list-contact" ui-sref="contacts.detail({ _id: contact._id })">
-              <p class="lead">
-                {{contact.name}}
-              </p>
-              <div ng-show="$this.searchContact">
-                <small>{{contact.title}}</small>
-                <small>{{contact.company}}</small>
-                <small>
-                  <ul ng-repeat="e in contact.email">
-                    <li class="list-unstyled">{{e.email}}</li>
-                  </ul>
-              </small>
-              </div>
-            </a>
-          </td>
-          <td class="text-right text-nowrap">
-            <button type="button" class="btn btn-danger"
-              ng-click="$this.removeContact(contact._id)">
-              <i class="material-icons">delete</i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+    <div ng-if="$this.search" layout-gt-xs="row">
+      <md-input-container flex-gt-xs class="md-block">
+        <input ng-model="$this.searchContact" placeholder="Search">
+        <md-icon class="md-warn search" ng-click="$this.removeSearch()" md-font-set="material-icons"> close </md-icon>
+      </md-input-container>
+    </div>
+    <div class="" ng-if="$this.superhero.length >= 1">
+      <md-subheader layout="coloumn" layout-align="end center" class="md-primary" ng-if="$this.superhero.length >= 1">
+        <small>{{$this.superhero.length}} contact(s) selected</small>
+      </md-subheader>
+    </div>
+    <md-list-item class="md-2-line contact-item noright" ng-repeat="(index, contact) in $this.contacts | filter: $this.searchContact"
+      ng-click="$this.goDetail(contact._id)">
+      <img ng-src="{{contact.image || 'default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
+        <p>{{contact.name}}</p>
+        <p ng-if="$this.searchContact == {{contact.title}}">{{contact.title}}</p>
+      <md-checkbox class="md-secondary" aria-label="Select" checklist-model="$this.superhero" checklist-value="contact._id"></md-checkbox>
+      <md-icon class="md-warn md-secondary" ng-click="$this.removeContact(contact._id)" md-font-set="material-icons"> clear </md-icon>
+      <md-divider ng-if="!$last"></md-divider>
+    </md-list-item>
+  </md-list>
+</md-content>
