@@ -6,19 +6,21 @@ Sumber Tantangan dari [codepolitan]
 
 ### Todo
 
-* Tambah fitur search
 * Tambah field lain (poto kontak)
+* Tambah kontak favorit
 * Buat Testing di client
 
 ### Depedencies
 
 * Angular
+* Angular-Animate
+* Angular-Aria
+* Angular-Material
 * Angular-Messages
-* Angular-ui
+* Angular-Sanitize
+* Angular-UI-Router
 * Basic-Auth
 * Body-Parser
-* Bootstrap
-* Bootstrap-material-design
 * Btoa
 * Express
 * Lodash
