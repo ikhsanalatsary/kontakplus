@@ -56,10 +56,5 @@
     "titlegen": "0.1.2",
     "webpack": "1.13.2",
     "webpack-dev-server": "1.15.1"
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run jscs"
-    }
   }
 }
