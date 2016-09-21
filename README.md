@@ -6,7 +6,7 @@ Sumber Tantangan dari [codepolitan]
 
 ### Todo
 
-* Tambah field lain (poto kontak)
+* Sort berdasar Alphabet
 * Tambah kontak favorit
 * Buat Testing di client
 
@@ -23,9 +23,11 @@ Sumber Tantangan dari [codepolitan]
 * Body-Parser
 * Btoa
 * Express
+* lf-ng-md-file-input
 * Lodash
 * Mongoose
 * Morgan
+* Multer
 * Sweetalert
 * akan ada lagi..
 
