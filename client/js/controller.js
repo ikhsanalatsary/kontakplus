@@ -2,10 +2,11 @@ import 'sweetalert/dist/sweetalert.css';
 import swal from 'sweetalert';
 
 export default class ContactsCtrl {
-  constructor($rootScope, $stateParams, $state, ContactServices, person) {
+  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast) {
     this.$rootScope = $rootScope;
     this.ContactServices = ContactServices;
     this.$state = $state;
+    this.$mdToast = $mdToast;
     this.newRecord = true;
     if (typeof $stateParams._id !== 'undefined') {
       this.newRecord = false;
@@ -16,9 +17,13 @@ export default class ContactsCtrl {
     this.search = false;
     this.superhero = [];
     this.contact = {};
-    this.phone = [{ option: 'Mobile' }];
-    this.email = [{ option: 'Personal' }];
-    this.address = [{ option: 'Home' }];
+    this.contact.phone = [{ option: 'Mobile' }];
+    this.contact.email = [{ option: 'Personal' }];
+    this.contact.address = [{ option: 'Home' }];
+    this.option = {
+      "browseIconCls": "myBrowse",
+      "captionIconCls": "myCaption",
+    };
 
     this.getContacts = () => {
       this.ContactServices.find()
@@ -34,6 +39,7 @@ export default class ContactsCtrl {
     this.getContacts();
   }
 
+  // Remove Method by {_id}
   removeContact(contactId) {
     swal({
         title: 'Are you sure?',
@@ -61,88 +67,109 @@ export default class ContactsCtrl {
       });
   }
 
+  // Go to form Create
   newContact() {
     this.$state.go('contacts.add');
   }
 
+  // Submit Contact method
   addContact() {
-    var { ContactServices, $state, contact, email, phone, address } = this;
-    console.log(contact);
+    var { ContactServices, $state, contact, files, $mdToast } = this;
     if (typeof contact.name === 'undefined') return;
-    var person = angular.extend({}, contact, { email }, { phone }, { address });
-    ContactServices.insert(person)
+    ContactServices.insert(contact, files)
       .then(res => {
         console.log(res.data);
         $state.go('contacts.list');
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Successfully created')
+            .position('top left')
+            .hideDelay(3000)
+          );
+
         this.$rootScope.$emit('findContacts', {});
       }, handleError);
   }
 
+  // Update Contact method
   updateContact() {
-    var { ContactServices, $state, person } = this;
-    ContactServices.update(person)
+    var { ContactServices, $state, person, files, $mdToast } = this;
+    ContactServices.update(person, files)
       .then(res => {
         console.log(res.data);
         $state.go('contacts.list');
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Successfully updated')
+            .position('top right')
+            .hideDelay(3000)
+          );
         this.$rootScope.$emit('findContacts', {});
       }, handleError);
   }
 
+  // Add field phone
   addNewPhone() {
     if (this.newRecord) {
       console.log('hey');
-      this.phone.push({ 'option': 'Mobile' });
+      this.contact.phone.push({ 'option': 'Mobile' });
     } else {
       this.person.phone.push({ 'option': 'Mobile' });
     }
 
   }
 
+  // Remove field phone
   removePhone(item) {
     if (this.newRecord) {
-      this.phone.splice(item, 1);
+      this.contact.phone.splice(item, 1);
     } else {
       this.person.phone.splice(item, 1);
     }
 
   }
 
+  // Add field email
   addNewEmail() {
     if (this.newRecord) {
-      this.email.push({ 'option': 'Personal' });
+      this.contact.email.push({ 'option': 'Personal' });
     } else {
       this.person.email.push({ 'option': 'Personal' });
     }
 
   }
 
+  // Remove field email
   removeEmail(item) {
     if (this.newRecord) {
-      this.email.splice(item, 1);
+      this.contact.email.splice(item, 1);
     } else {
       this.person.email.splice(item, 1);
     }
 
   }
 
+  // Add field address
   addNewAddress() {
     if (this.newRecord) {
-      this.address.push({ 'option': 'Home' });
+      this.contact.address.push({ 'option': 'Home' });
     } else {
       this.person.address.push({ 'option': 'Home' });
     }
 
   }
 
+  // Remove field address
   removeAddress(item) {
     if (this.newRecord) {
-      this.address.splice(item, 1);
+      this.contact.address.splice(item, 1);
     } else {
       this.person.address.splice(item, 1);
     }
 
   }
 
+  // Checlist box All contact
   checkAll(checked) {
     if (checked) {
       this.superhero = this.contacts.map((item) => item._id);
@@ -151,17 +178,26 @@ export default class ContactsCtrl {
     }
   }
 
+  // Uncheck all contact
   uncheckAll() {
     this.superhero = [];
   }
 
+  // Remove / delete selected contact
   deleteAll() {
     var arr = this.superhero;
+    var $mdToast = this.$mdToast;
     if (arr.length > 1) {
       return arr.forEach(contactId => {
         this.ContactServices.delete(contactId)
           .then(res => {
             if (res.status == 200) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Successfully deleted')
+                  .position('top left')
+                  .hideDelay(3000)
+                );
               this.getContacts();
             }
           }, handleError)
@@ -170,30 +206,36 @@ export default class ContactsCtrl {
     }
   }
 
+  // Search button
   searchBtn() {
     this.search = true;
   }
 
+  // Disable search
   removeSearch() {
     this.search = false;
     this.searchContact = '';
   }
 
+  // Go to Detail page by {_id}
   goDetail(_id) {
     this.$state.go('contacts.detail', { _id });
   }
 
-  reset(contact) {
-    this.reset = {};
-    angular.copy(this.reset, contact);
-  }
-
+  // Back to list contact
   goBack() {
     this.$state.go('contacts.list');
   }
 }
 
-ContactsCtrl.$inject = ['$rootScope', '$stateParams', '$state', 'ContactServices', 'person'];
+ContactsCtrl.$inject = [
+  '$rootScope',
+  '$stateParams',
+  '$state',
+  'ContactServices',
+  'person',
+  '$mdToast',
+];
 
 function handleError(res) {
   if (res.status !== -1) {

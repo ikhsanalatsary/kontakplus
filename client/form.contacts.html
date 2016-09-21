@@ -30,7 +30,7 @@
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">phone</md-icon>
-          <md-select name="option" ng-model="phone.option">
+          <md-select aria-label="option phone" name="option" ng-model="phone.option">
             <md-option value="Mobile">Mobile</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Home">Home</md-option>
@@ -58,7 +58,7 @@
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">email</md-icon>
-          <md-select name="option" ng-model="e.option">
+          <md-select aria-label="option email" name="option" ng-model="e.option">
             <md-option value="Personal">Personal</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Other">Other</md-option>
@@ -86,7 +86,7 @@
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">room</md-icon>
-          <md-select name="option" ng-model="alm.option">
+          <md-select aria-label="option address" name="option" ng-model="alm.option">
             <md-option value="Home">Home</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Other">Other</md-option>
@@ -116,6 +116,21 @@
         <input ng-model="vm.person.company">
       </md-input-container>
 
+      <!-- upload -->
+      <div layout="row">
+        <div flex="50">
+          <md-icon md-font-set="material-icons">photo_camera</md-icon>
+          <md-card>
+            <img ng-src="uploads/{{vm.person.avatar || 'default-img.png'}}" alt="" />
+          </md-card>
+        </div>
+
+        <md-input-container class="md-block" flex="50">
+          <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
+            lf-placeholder="Choose avatar" lf-browse-label="Change" lf-option="vm.option" preview></lf-ng-md-file-input>
+        </md-input-container>
+      </div>
+
       <div>
         <md-button type="submit" ng-click="vm.updateContact()">Save</md-button>
       </div>
@@ -124,6 +139,7 @@
 
     <br>
     <pre>contact = {{vm.person | json}}</pre>
+    <pre>contact = {{vm.files | json}}</pre>
   </md-content>
 </div>
 
@@ -161,11 +177,11 @@
       </md-input-container>
 
       <!-- phone input -->
-      <div layout="row" ng-repeat="phone in vm.phone">
+      <div layout="row" ng-repeat="phone in vm.contact.phone">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">phone</md-icon>
-          <md-select name="option" ng-model="phone.option">
+          <md-select aria-label="option phone" name="option" ng-model="phone.option">
             <md-option value="Mobile">Mobile</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Home">Home</md-option>
@@ -189,11 +205,11 @@
       </div>
 
       <!-- email input -->
-      <div layout="row" ng-repeat="e in vm.email">
+      <div layout="row" ng-repeat="e in vm.contact.email">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">email</md-icon>
-          <md-select name="option" ng-model="e.option">
+          <md-select aria-label="option email" name="option" ng-model="e.option">
             <md-option value="Personal">Personal</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Other">Other</md-option>
@@ -223,11 +239,11 @@
       </div>
 
       <!-- address input -->
-      <div layout="row" ng-repeat="alm in vm.address">
+      <div layout="row" ng-repeat="alm in vm.contact.address">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">room</md-icon>
-          <md-select name="option" ng-model="alm.option">
+          <md-select aria-label="option address" name="option" ng-model="alm.option">
             <md-option value="Home">Home</md-option>
             <md-option value="Work">Work</md-option>
             <md-option value="Other">Other</md-option>
@@ -264,16 +280,19 @@
         <input ng-model="vm.contact.company">
       </md-input-container>
 
+      <md-input-container class="md-block">
+        <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
+          lf-placeholder="Choose avatar" lf-browse-label="Change" lf-option="vm.option" preview></lf-ng-md-file-input>
+      </md-input-container>
+
       <div>
-        <md-button type="submit" ng-click="vm.addContact()">Save</md-button>
+        <md-button aria-label="submit" type="submit" ng-click="vm.addContact()">Save</md-button>
       </div>
 
     </form>
 
     <br>
     <pre>contact = {{vm.contact | json}}</pre>
-    <pre>phone = {{vm.phone | json}}</pre>
-    <pre>email = {{vm.email | json}}</pre>
-    <pre>address = {{vm.address | json}}</pre>
+    <pre>image = {{vm.files | json}}</pre>
   </md-content>
 </div>

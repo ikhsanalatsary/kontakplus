@@ -1,4 +1,6 @@
-export default function routes($stateProvider, $urlRouterProvider) {
+export default function routes($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('blue');
   $stateProvider
     .state({
       name: 'contacts',
@@ -52,4 +54,4 @@ export default function routes($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/contacts/list');
 };
 
-routes.$inject = ['$stateProvider', '$urlRouterProvider'];
+routes.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];

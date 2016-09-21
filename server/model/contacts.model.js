@@ -11,6 +11,7 @@ const contactSchema = new Schema({
   phone: { type: Array, default: [] },
   address: { type: Array, default: [] },
   company: { type: String, default: '' },
+  avatar: { type: String, default: '' },
   created: { type: Date, default: Date.now },
   updated: Date,
 });

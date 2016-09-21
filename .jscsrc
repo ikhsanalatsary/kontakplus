@@ -2,5 +2,6 @@
   "preset": "airbnb",
   "disallowQuotedKeysInObjects": false,
   "validateQuoteMarks": false,
-  "validateIndentation": false
+  "validateIndentation": false,
+  "requirePaddingNewLinesAfterBlocks": false
 }

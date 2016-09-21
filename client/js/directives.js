@@ -54,8 +54,8 @@ export default function ScrollDirective($window) {
       picture.css('background-position', '50% ' + (ratio(dim) * 50) + '%');
       /* Uncomment the line below if you want shadow inside picture (low performance) */
 
-      element.css('box-shadow', '0 -' + (dim.height * 3 / 4) + 'px ' + (dim.height / 2) + 'px -'
-        + (dim.height / 2) + 'px rgba(0,0,0,' + ratio(dim) + ') inset');
+      // element.css('box-shadow', '0 -' + (dim.height * 3 / 4) + 'px ' + (dim.height / 2) + 'px -'
+      //   + (dim.height / 2) + 'px rgba(0,0,0,' + ratio(dim) + ') inset');
     }
 
     function ratio(dim) {

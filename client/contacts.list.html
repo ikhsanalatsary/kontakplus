@@ -3,7 +3,7 @@
     <h2 class="md-flex">Kontak++</h2>
   </div>
 </md-toolbar>
-<md-button ng-click="$this.newContact()" class="md-fab md-fab-bottom-right md-accent fixed" aria-label="Person">
+<md-button ng-click="$this.newContact()" class="md-fab md-fab-bottom-right md-accent md-hue-2 fixed" aria-label="Person">
   <md-tooltip md-direction="left">
     Create Contact
   </md-tooltip>
@@ -44,11 +44,10 @@
     </div>
     <md-list-item class="md-2-line contact-item noright" ng-repeat="(index, contact) in $this.contacts | filter: $this.searchContact"
       ng-click="$this.goDetail(contact._id)">
-      <img ng-src="{{contact.image || 'default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
+      <img ng-src="uploads/{{contact.avatar || 'default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
         <p>{{contact.name}}</p>
-        <p ng-if="$this.searchContact == {{contact.title}}">{{contact.title}}</p>
       <md-checkbox class="md-secondary" aria-label="Select" checklist-model="$this.superhero" checklist-value="contact._id"></md-checkbox>
-      <md-icon class="md-warn md-secondary" ng-click="$this.removeContact(contact._id)" md-font-set="material-icons"> clear </md-icon>
+      <md-icon class="md-warn md-secondary" aria-label="delete contact" ng-click="$this.removeContact(contact._id)" md-font-set="material-icons"> clear </md-icon>
       <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
   </md-list>

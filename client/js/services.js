@@ -8,22 +8,62 @@ export default class ContactServices {
     this.api = '/api/contacts/';
   }
 
+  // GET method
   find() {
     return this.$http.get(this.api, { headers });
   }
 
+  // DELETE method
   delete(contactId) {
     return this.$http.delete(this.api + contactId, { headers });
   }
 
-  insert(contact) {
-    return this.$http.post(this.api, contact, { headers });
+  // POST method
+  insert(data, files) {
+    let headers = {
+      'Authorization': 'Basic ' + Base64Str,
+      'Content-Type': undefined,
+    };
+    var fd = new FormData();
+    if (typeof files !== 'undefined') {
+      angular.forEach(files, (obj) => {
+        fd.append('avatar', obj.lfFile);
+      });
+    }
+
+    for (let key in data) {
+      // Angular.toJson lebih ketat dibanding JsonStringify,
+      // hapus key '$$hashKey', pada object value Array
+      fd.append(key, angular.toJson(data[key]));
+    }
+
+    return this.$http.post(this.api, fd, { transformRequest: angular.identity, headers });
   }
 
-  update(contact) {
-    return this.$http.put(this.api + contact._id, contact, { headers });
+  // PUT method
+  update(contact, files) {
+    let headers = {
+      'Authorization': 'Basic ' + Base64Str,
+      'Content-Type': undefined,
+    };
+    var fd = new FormData();
+    if (typeof files !== 'undefined') {
+      angular.forEach(files, (obj) => {
+        fd.append('avatar', obj.lfFile);
+      });
+    }
+
+    for (let key in contact) {
+      fd.append(key, angular.toJson(contact[key]));
+    }
+
+    return this.$http.put(this.api + contact._id, fd, {
+      transformRequest: angular.identity,
+      headers,
+    });
   }
 
+  // Show by {_id} method
   findOne(contactId) {
     return this.$http.get(this.api + contactId, { headers });
   }
