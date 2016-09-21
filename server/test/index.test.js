@@ -10,6 +10,8 @@ import config from '../config';
 import Contact from '../model/contacts.model.js';
 const admin = require('../config/config').admin;
 const expect = chai.expect;
+const FormData = require('form-data');
+const fs = require('fs');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.getDbConnection());
@@ -151,6 +153,27 @@ describe('Routing', function () {
 
   describe("POST '/api/contacts'", function () {
     it('should post and get response status 200', function (done) {
+      // var fd = new FormData();
+      // for (let key in contact) {
+      //   fd.append(key, JSON.stringify(contact[key]));
+      // }
+      let contact = {
+        name: `"${faker.Name.findName()}"`,
+        title: `"${contactTitle}"`,
+        email: `"${[
+          { option: option2, email: faker.Internet.email() },
+          { option: option2, email: faker.Internet.email() },
+        ]}"`,
+        phone: `"${[
+          { option, number: faker.PhoneNumber.phoneNumber() },
+          { option, number: faker.PhoneNumber.phoneNumber() },
+        ]}"`,
+        address: `"${[
+          { option: option3, address: faker.Address.streetAddress() },
+          { option: option3, address: faker.Address.streetAddress() },
+        ]}"`,
+        company: `"${faker.Company.companyName()}"`,
+      };
       request(api)
         .post('/')
         .set(config.authorization)
@@ -166,17 +189,31 @@ describe('Routing', function () {
 
   describe("PUT '/api/contacts/:id'", function () {
     it('should get status 200 if Authorized', function (done) {
+      let contact = {
+        name: `"${faker.Name.findName()}"`,
+        title: `"${contactTitle}"`,
+        email: `"${[
+          { option: option2, email: faker.Internet.email() },
+          { option: option2, email: faker.Internet.email() },
+        ]}"`,
+        phone: `"${[
+          { option, number: faker.PhoneNumber.phoneNumber() },
+          { option, number: faker.PhoneNumber.phoneNumber() },
+        ]}"`,
+        address: `"${[
+          { option: option3, address: faker.Address.streetAddress() },
+          { option: option3, address: faker.Address.streetAddress() },
+        ]}"`,
+        company: `"${faker.Company.companyName()}"`,
+      };
+
       let newContact = new Contact(contact);
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = 'Jhonny Depp';
-          var newNumber = { option, number: '354345784532232' };
-          var newEmail = { email: faker.Internet.email() };
-          var newAddress = { address: faker.Address.streetAddress() };
-          contact.phone.push(newNumber);
-          contact.email.push(newEmail);
-          contact.address.push(newAddress);
+          contact.name = '"Jhonny Depp"';
+          contact.company = '"Hollywood"';
+          contact.title = '"Actress"';
           request(api)
             .put('/' + contact.id)
             .set(config.authorization)
@@ -204,30 +241,39 @@ describe('Routing', function () {
   });
 
   describe("PATCH '/api/contacts/:id'", function () {
+    let contact = {
+      name: `"${faker.Name.findName()}"`,
+      title: `"${contactTitle}"`,
+      email: `"${[
+        { option: option2, email: faker.Internet.email() },
+        { option: option2, email: faker.Internet.email() },
+      ]}"`,
+      phone: `"${[
+        { option, number: faker.PhoneNumber.phoneNumber() },
+        { option, number: faker.PhoneNumber.phoneNumber() },
+      ]}"`,
+      address: `"${[
+        { option: option3, address: faker.Address.streetAddress() },
+        { option: option3, address: faker.Address.streetAddress() },
+      ]}"`,
+      company: `"${faker.Company.companyName()}"`,
+    };
     it('should get status 200 if Authorized', function (done) {
       let newContact = new Contact(contact);
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = 'Katy Perry';
-          contact.title = 'My Idol';
-          var newNumber = { option, number: '354345784532232' };
-          var newEmail = { email: faker.Internet.email() };
-          var newAddress = { address: faker.Address.streetAddress() };
-          contact.phone.push(newNumber);
-          contact.email.push(newEmail);
-          contact.address.push(newAddress);
+          contact.name = '"Taylor Swift"';
           request(api)
             .patch('/' + contact.id)
             .set(config.authorization)
             .send(contact)
-            .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
               if (err) return done(err);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.have.property('name').to.equal('Katy Perry');
-              expect(res.body).to.have.property('title').to.equal('My Idol');
+              expect(res.body).to.have.property('name').to.equal('Taylor Swift');
+              expect(res.body).to.have.property('title');
               expect(res.body).to.have.property('email');
               expect(res.body).to.have.property('phone');
               expect(res.body).to.have.property('address');
@@ -244,6 +290,24 @@ describe('Routing', function () {
   });
 
   describe("DELETE '/api/contacts/:id'", function () {
+    let contact = {
+      name: `"${faker.Name.findName()}"`,
+      title: `"${contactTitle}"`,
+      email: `"${[
+        { option: option2, email: faker.Internet.email() },
+        { option: option2, email: faker.Internet.email() },
+      ]}"`,
+      phone: `"${[
+        { option, number: faker.PhoneNumber.phoneNumber() },
+        { option, number: faker.PhoneNumber.phoneNumber() },
+      ]}"`,
+      address: `"${[
+        { option: option3, address: faker.Address.streetAddress() },
+        { option: option3, address: faker.Address.streetAddress() },
+      ]}"`,
+      company: `"${faker.Company.companyName()}"`,
+    };
+
     it('should get status 200 if Authorized', function (done) {
       let newContact = new Contact(contact);
       var promise = newContact.save();
