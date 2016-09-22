@@ -88,7 +88,7 @@ exports.delete = (req, res, next) => {
 exports.patch = (req, res, next) => {
   Contact.findById(req.params.id, function (err, contact) {
     contact.favorite = req.body.favorite;
-    contact.name = req.body.name;
+    if (req.body.name) contact.name = req.body.name;
 
     contact.save((err, result) => {
       if (err) return res.json(400, err);

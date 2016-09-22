@@ -78,6 +78,7 @@ export default class ContactServices {
     return this.$http.get(this.api + contactId, { headers });
   }
 
+  // Set Favorite method
   patch(contactId, data) {
     return this.$http.patch(this.api + contactId, data, { headers });
   }

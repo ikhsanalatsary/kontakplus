@@ -126,6 +126,7 @@ export default class ContactsCtrl {
       }, handleError);
   }
 
+  // Set favorite method
   addFavorite(val) {
     var { ContactServices, $stateParams, $mdToast } = this;
     this.contact.favorite = val;

@@ -31,7 +31,6 @@
   <md-icon md-font-set="material-icons">delete</md-icon>
 </md-button>
 <md-content>
-<!-- <md-content flex layout-padding class="list-content"> -->
   <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
     <md-tab label="All Contacts">
       <md-content md-scroll-y class="md-padding">
@@ -40,20 +39,6 @@
             <md-checkbox aria-label="Select All" ng-model="$this.value" ng-change="$this.checkAll($this.value)"></md-checkbox>
             Contacts
           </md-subheader>
-          <!-- <div ng-if="!$this.search" layout="row" layout-align="end center">
-            <md-button aria-label="Search" ng-click="$this.searchBtn()">
-              <md-tooltip md-direction="left">
-                Search
-              </md-tooltip>
-              <md-icon md-font-set="material-icons"> search </md-icon>
-            </md-button>
-          </div>
-          <div ng-if="$this.search" layout-gt-xs="row">
-            <md-input-container flex-gt-xs class="md-block">
-              <input ng-model="$this.searchContact" placeholder="Search">
-              <md-icon class="md-warn search" ng-click="$this.removeSearch()" md-font-set="material-icons"> close </md-icon>
-            </md-input-container>
-          </div> -->
           <div class="" ng-if="$this.superhero.length >= 1">
             <md-subheader layout="coloumn" layout-align="end center" class="md-primary" ng-if="$this.superhero.length >= 1">
               <small>{{$this.superhero.length}} contact(s) selected</small>
@@ -72,11 +57,8 @@
     </md-tab>
     <md-tab label="favorite">
       <md-content md-scroll-y class="md-padding">
-        <!-- <h1 class="md-display-2">Tab One</h1> -->
-        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p> -->
         <md-list class="fixedRows">
           <md-subheader class="md-no-sticky">
-            <!-- <md-checkbox aria-label="Select All" ng-model="$this.value" ng-change="$this.checkAll($this.value)"></md-checkbox> -->
             Contacts Favorite
           </md-subheader>
           <p ng-if="!$this.confav">
@@ -86,7 +68,6 @@
             ng-click="$this.goDetail(confav._id)">
             <img ng-src="uploads/{{confav.avatar || 'default-img.png'}}" class="md-avatar" alt="{{confav.name}}" />
               <p>{{confav.name}}</p>
-            <!-- <md-checkbox class="md-secondary" aria-label="Select" checklist-model="$this.superhero" checklist-value="contact._id"></md-checkbox> -->
             <md-icon class="md-warn md-secondary" aria-label="delete contact" ng-click="$this.removeContact(confav._id)" md-font-set="material-icons"> clear </md-icon>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>

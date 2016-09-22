@@ -6,8 +6,6 @@ Sumber Tantangan dari [codepolitan]
 
 ### Todo
 
-* Sort berdasar Alphabet
-* Tambah kontak favorit
 * Buat Testing di client
 
 ### Depedencies
@@ -63,7 +61,7 @@ $ npm run dev
 ```
 
 ### Cara tes
-Setelah server berjalan pada localhost dengan port 3000. maka bisa menjalankan tesnya.
+Setelah server berjalan pada localhost dengan port 3000. maka bisa menjalankan tes untuk servernya.
 
 ```sh
 $ npm test
