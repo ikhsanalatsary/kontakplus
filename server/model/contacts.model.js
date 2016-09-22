@@ -12,6 +12,7 @@ const contactSchema = new Schema({
   address: { type: Array, default: [] },
   company: { type: String, default: '' },
   avatar: { type: String, default: '' },
+  favorite: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
   updated: Date,
 });

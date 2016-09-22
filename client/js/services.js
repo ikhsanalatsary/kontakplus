@@ -10,7 +10,17 @@ export default class ContactServices {
 
   // GET method
   find() {
+    var data = {
+       name: 'Katy Perry',
+    };
     return this.$http.get(this.api, { headers });
+  }
+
+  findFav() {
+    var data = {
+       favorite: true,
+    };
+    return this.$http.get(this.api, { params: data, headers });
   }
 
   // DELETE method
@@ -66,6 +76,10 @@ export default class ContactServices {
   // Show by {_id} method
   findOne(contactId) {
     return this.$http.get(this.api + contactId, { headers });
+  }
+
+  patch(contactId, data) {
+    return this.$http.patch(this.api + contactId, data, { headers });
   }
 }
 

@@ -4,6 +4,7 @@ import swal from 'sweetalert';
 export default class ContactsCtrl {
   constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast) {
     this.$rootScope = $rootScope;
+    this.$stateParams = $stateParams;
     this.ContactServices = ContactServices;
     this.$state = $state;
     this.$mdToast = $mdToast;
@@ -32,11 +33,28 @@ export default class ContactsCtrl {
         }, handleError);
     };
 
+    this.getConFav = () => {
+      this.ContactServices.findFav()
+        .then(res => {
+          this.confav = res.data;
+        }, (res) => {
+          if (res.status == 404) {
+            console.log('You have no favorite contact');
+          } else {
+            console.log(res);
+          }
+
+        });
+    };
+
     this.$rootScope.$on('findContacts', () => {
       this.getContacts();
+      this.getConFav();
     });
 
-    this.getContacts();
+    // this.getContacts();
+    // this.getConFav();
+    this.$rootScope.$emit('findContacts', {});
   }
 
   // Remove Method by {_id}
@@ -57,7 +75,7 @@ export default class ContactsCtrl {
           this.ContactServices.delete(contactId)
             .then(res => {
               if (res.status == 200) {
-                this.getContacts();
+                this.$rootScope.$emit('findContacts', {});
               }
             }, handleError);
         } else {
@@ -78,7 +96,7 @@ export default class ContactsCtrl {
     if (typeof contact.name === 'undefined') return;
     ContactServices.insert(contact, files)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
@@ -96,7 +114,7 @@ export default class ContactsCtrl {
     var { ContactServices, $state, person, files, $mdToast } = this;
     ContactServices.update(person, files)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
@@ -108,10 +126,25 @@ export default class ContactsCtrl {
       }, handleError);
   }
 
+  addFavorite(val) {
+    var { ContactServices, $stateParams, $mdToast } = this;
+    this.contact.favorite = val;
+    ContactServices.patch($stateParams._id, this.contact)
+      .then(res => {
+        // console.log(res);
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Success changed')
+            .position('top left')
+            .hideDelay(3000)
+          );
+        this.$rootScope.$emit('findContacts', {});
+      }, handleError);
+  }
+
   // Add field phone
   addNewPhone() {
     if (this.newRecord) {
-      console.log('hey');
       this.contact.phone.push({ 'option': 'Mobile' });
     } else {
       this.person.phone.push({ 'option': 'Mobile' });
@@ -198,7 +231,7 @@ export default class ContactsCtrl {
                   .position('top left')
                   .hideDelay(3000)
                 );
-              this.getContacts();
+              this.$rootScope.$emit('findContacts', {});
             }
           }, handleError)
           .finally(() => this.superhero = []);

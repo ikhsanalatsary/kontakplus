@@ -6,12 +6,17 @@
   text-decoration: none;
 }
 
-.list-content {
-
+.search-container {
+  width: 100%;
+  margin-top: 40px;
 }
 
 .search {
   cursor: pointer;
+}
+
+.input-search {
+  width: 100%;
 }
 
 .mini {
@@ -69,6 +74,28 @@
 
 .myCaption{
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjIiLz48cGF0aCBkPSJNOSAyTDcuMTcgNEg0Yy0xLjEgMC0yIC45LTIgMnYxMmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjZjMC0xLjEtLjktMi0yLTJoLTMuMTdMMTUgMkg5em0zIDE1Yy0yLjc2IDAtNS0yLjI0LTUtNXMyLjI0LTUgNS01IDUgMi4yNCA1IDUtMi4yNCA1LTUgNXoiLz48L3N2Zz4=);
+}
+
+.star {
+  visibility: hidden;
+  font-size:30px;
+  cursor:pointer;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin: 7px 7px 14px;
+}
+.star:before {
+  content: "\E83A";
+  font-family: "Material Icons";
+  position: absolute;
+  visibility:visible;
+}
+.star:checked:before {
+  content: "\E838";
+  font-family: "Material Icons";
+  position: absolute;
+  color: #2196F3;
 }
 
 [md-header-picture] {

@@ -15,7 +15,7 @@
   </md-toolbar>
   <div class="main-fab">
     <md-button md-font-set="material-icons" aria-label="Float Action Button" class="md-fab md-accent">
-     <md-icon md-font-set="material-icons">star_border</md-icon>
+     <input type="checkbox" class="star" aria-label="favorite" ng-model="contact.person.favorite" ng-change="contact.addFavorite(contact.person.favorite)">
     </md-button>
   </div>
 </header>

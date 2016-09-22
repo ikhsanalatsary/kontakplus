@@ -84,6 +84,7 @@ describe('Routing', function () {
       { option: option3, address: faker.Address.streetAddress() },
     ],
     company: faker.Company.companyName(),
+    favorite: false,
   };
 
   describe("GET '/'", function () {
@@ -158,7 +159,7 @@ describe('Routing', function () {
       //   fd.append(key, JSON.stringify(contact[key]));
       // }
       let contact = {
-        name: `"${faker.Name.findName()}"`,
+        name: `"${faker.Name.findName()} post"`,
         title: `"${contactTitle}"`,
         email: `"${[
           { option: option2, email: faker.Internet.email() },
@@ -211,7 +212,7 @@ describe('Routing', function () {
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = '"Jhonny Depp"';
+          contact.name = '"Jhonny Depp put"';
           contact.company = '"Hollywood"';
           contact.title = '"Actress"';
           request(api)
@@ -223,7 +224,7 @@ describe('Routing', function () {
             .end((err, res) => {
               if (err) return done(err);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.have.property('name').to.equal('Jhonny Depp');
+              expect(res.body).to.have.property('name').to.equal('Jhonny Depp put');
               expect(res.body).to.have.property('title');
               expect(res.body).to.have.property('email');
               expect(res.body).to.have.property('phone');
@@ -241,29 +242,13 @@ describe('Routing', function () {
   });
 
   describe("PATCH '/api/contacts/:id'", function () {
-    let contact = {
-      name: `"${faker.Name.findName()}"`,
-      title: `"${contactTitle}"`,
-      email: `"${[
-        { option: option2, email: faker.Internet.email() },
-        { option: option2, email: faker.Internet.email() },
-      ]}"`,
-      phone: `"${[
-        { option, number: faker.PhoneNumber.phoneNumber() },
-        { option, number: faker.PhoneNumber.phoneNumber() },
-      ]}"`,
-      address: `"${[
-        { option: option3, address: faker.Address.streetAddress() },
-        { option: option3, address: faker.Address.streetAddress() },
-      ]}"`,
-      company: `"${faker.Company.companyName()}"`,
-    };
     it('should get status 200 if Authorized', function (done) {
       let newContact = new Contact(contact);
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = '"Taylor Swift"';
+          contact.favorite = true;
+          contact.name = 'patch';
           request(api)
             .patch('/' + contact.id)
             .set(config.authorization)
@@ -272,13 +257,8 @@ describe('Routing', function () {
             .end((err, res) => {
               if (err) return done(err);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.have.property('name').to.equal('Taylor Swift');
-              expect(res.body).to.have.property('title');
-              expect(res.body).to.have.property('email');
-              expect(res.body).to.have.property('phone');
-              expect(res.body).to.have.property('address');
-              expect(res.body).to.have.property('company');
-              expect(res.body).to.have.property('_id').to.equal(contact.id);
+              expect(res.body).to.have.property('name').to.equal('patch');
+              expect(res.body).to.have.property('favorite').to.equal(true);
               done();
             });
         }
