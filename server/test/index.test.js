@@ -10,8 +10,6 @@ import config from '../config';
 import Contact from '../model/contacts.model.js';
 const admin = require('../config/config').admin;
 const expect = chai.expect;
-const FormData = require('form-data');
-const fs = require('fs');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.getDbConnection());
@@ -154,27 +152,30 @@ describe('Routing', function () {
 
   describe("POST '/api/contacts'", function () {
     it('should post and get response status 200', function (done) {
-      // var fd = new FormData();
-      // for (let key in contact) {
-      //   fd.append(key, JSON.stringify(contact[key]));
-      // }
+      let emailVal = [
+        { option: option2, email: faker.Internet.email() },
+        { option: option2, email: faker.Internet.email() },
+      ];
+
+      let phoneVal = [
+        { option, number: faker.PhoneNumber.phoneNumber() },
+        { option, number: faker.PhoneNumber.phoneNumber() },
+      ];
+
+      let addVal = [
+        { option: option3, address: faker.Address.streetAddress() },
+        { option: option3, address: faker.Address.streetAddress() },
+      ];
+
       let contact = {
         name: `"${faker.Name.findName()} post"`,
         title: `"${contactTitle}"`,
-        email: `"${[
-          { option: option2, email: faker.Internet.email() },
-          { option: option2, email: faker.Internet.email() },
-        ]}"`,
-        phone: `"${[
-          { option, number: faker.PhoneNumber.phoneNumber() },
-          { option, number: faker.PhoneNumber.phoneNumber() },
-        ]}"`,
-        address: `"${[
-          { option: option3, address: faker.Address.streetAddress() },
-          { option: option3, address: faker.Address.streetAddress() },
-        ]}"`,
+        email: JSON.stringify(emailVal),
+        phone: JSON.stringify(phoneVal),
+        address: JSON.stringify(phoneVal),
         company: `"${faker.Company.companyName()}"`,
       };
+
       request(api)
         .post('/')
         .set(config.authorization)
@@ -186,25 +187,65 @@ describe('Routing', function () {
           done();
         });
     });
+
+    describe('upload image', function () {
+      it('should get status 200 response', function (done) {
+        let emailVal = [
+          { option: option2, email: faker.Internet.email() },
+          { option: option2, email: faker.Internet.email() },
+        ];
+
+        let phoneVal = [
+          { option, number: faker.PhoneNumber.phoneNumber() },
+          { option, number: faker.PhoneNumber.phoneNumber() },
+        ];
+
+        let addVal = [
+          { option: option3, address: faker.Address.streetAddress() },
+          { option: option3, address: faker.Address.streetAddress() },
+        ];
+
+        request(api)
+          .post('/')
+          .set(config.authorization)
+          .field('Content-Type', 'multipart/form-data')
+          .field('name', JSON.stringify("Tes upload"))
+          .field('phone', JSON.stringify(phoneVal))
+          .field('email', JSON.stringify(emailVal))
+          .field('address', JSON.stringify(addVal))
+          .attach('avatar', '/Users/adi/Desktop/Tesphoto.png')
+          .end((err, res) => {
+            if (err) return done(err);
+            expect(res.status).to.equal(200);
+            done();
+          });
+      });
+    });
   });
 
   describe("PUT '/api/contacts/:id'", function () {
     it('should get status 200 if Authorized', function (done) {
+      let emailVal = [
+        { option: option2, email: faker.Internet.email() },
+        { option: option2, email: faker.Internet.email() },
+      ];
+
+      let phoneVal = [
+        { option, number: faker.PhoneNumber.phoneNumber() },
+        { option, number: faker.PhoneNumber.phoneNumber() },
+      ];
+
+      let addVal = [
+        { option: option3, address: faker.Address.streetAddress() },
+        { option: option3, address: faker.Address.streetAddress() },
+      ];
+
       let contact = {
-        name: `"${faker.Name.findName()}"`,
+        name: `"${faker.Name.findName()} post"`,
         title: `"${contactTitle}"`,
-        email: `"${[
-          { option: option2, email: faker.Internet.email() },
-          { option: option2, email: faker.Internet.email() },
-        ]}"`,
-        phone: `"${[
-          { option, number: faker.PhoneNumber.phoneNumber() },
-          { option, number: faker.PhoneNumber.phoneNumber() },
-        ]}"`,
-        address: `"${[
-          { option: option3, address: faker.Address.streetAddress() },
-          { option: option3, address: faker.Address.streetAddress() },
-        ]}"`,
+        email: JSON.stringify(emailVal),
+        phone: JSON.stringify(phoneVal),
+        address: JSON.stringify(phoneVal),
         company: `"${faker.Company.companyName()}"`,
       };
 
@@ -212,9 +253,9 @@ describe('Routing', function () {
       var promise = newContact.save();
       promise.then(contact => {
         if (contact) {
-          contact.name = '"Jhonny Depp put"';
-          contact.company = '"Hollywood"';
-          contact.title = '"Actress"';
+          contact.name = JSON.stringify("Jhonny Depp put");
+          contact.company = JSON.stringify("Hollywood");
+          contact.title = JSON.stringify("Actress");
           request(api)
             .put('/' + contact.id)
             .set(config.authorization)
@@ -270,21 +311,27 @@ describe('Routing', function () {
   });
 
   describe("DELETE '/api/contacts/:id'", function () {
+    let emailVal = [
+      { option: option2, email: faker.Internet.email() },
+      { option: option2, email: faker.Internet.email() },
+    ];
+
+    let phoneVal = [
+      { option, number: faker.PhoneNumber.phoneNumber() },
+      { option, number: faker.PhoneNumber.phoneNumber() },
+    ];
+
+    let addVal = [
+      { option: option3, address: faker.Address.streetAddress() },
+      { option: option3, address: faker.Address.streetAddress() },
+    ];
+
     let contact = {
-      name: `"${faker.Name.findName()}"`,
+      name: `"${faker.Name.findName()} post"`,
       title: `"${contactTitle}"`,
-      email: `"${[
-        { option: option2, email: faker.Internet.email() },
-        { option: option2, email: faker.Internet.email() },
-      ]}"`,
-      phone: `"${[
-        { option, number: faker.PhoneNumber.phoneNumber() },
-        { option, number: faker.PhoneNumber.phoneNumber() },
-      ]}"`,
-      address: `"${[
-        { option: option3, address: faker.Address.streetAddress() },
-        { option: option3, address: faker.Address.streetAddress() },
-      ]}"`,
+      email: JSON.stringify(emailVal),
+      phone: JSON.stringify(phoneVal),
+      address: JSON.stringify(phoneVal),
       company: `"${faker.Company.companyName()}"`,
     };
 
