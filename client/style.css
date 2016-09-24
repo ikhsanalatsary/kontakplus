@@ -11,6 +11,10 @@
   margin-top: 40px;
 }
 
+.md-input-focused .search {
+  color: #fff !important;
+}
+
 .search {
   cursor: pointer;
 }

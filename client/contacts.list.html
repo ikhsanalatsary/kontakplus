@@ -1,10 +1,7 @@
 <md-toolbar class="md-primary">
-  <div class="md-toolbar-tools">
-    <h2 ng-if="!$this.search" class="md-flex">Kontak++</h2>
+  <div ng-if="!$this.search" class="md-toolbar-tools">
+    <h2 class="md-flex">Kontak++</h2>
     <span flex></span>
-    <md-button ng-if="$this.search" ng-click="$this.removeSearch()" class="md-tools mini" aria-label="Go Back">
-      <md-icon md-font-set="material-icons">arrow_back</md-icon>
-    </md-button>
     <md-button ng-if="!$this.search" aria-label="Search" ng-click="$this.searchBtn()">
       <md-tooltip md-direction="left">
         Search
@@ -12,6 +9,16 @@
       <md-icon md-font-set="material-icons"> search </md-icon>
     </md-button>
     <md-input-container ng-if="$this.search" class="md-block search-container" flex>
+      <input ng-model="$this.searchContact" class="input-search" placeholder="Search">
+      <md-icon class="md-warn search" ng-click="$this.removeSearch()" md-font-set="material-icons"> close </md-icon>
+    </md-input-container>
+  </div>
+  <div ng-if="$this.search" class="md-toolbar-tools">
+    <md-button ng-if="$this.search" ng-click="$this.removeSearch()" class="md-tools mini" aria-label="Go Back">
+      <md-icon md-font-set="material-icons">arrow_back</md-icon>
+    </md-button>
+    <!-- <span flex></span> -->
+    <md-input-container class="md-block search-container" flex>
       <input ng-model="$this.searchContact" class="input-search" placeholder="Search">
       <md-icon class="md-warn search" ng-click="$this.removeSearch()" md-font-set="material-icons"> close </md-icon>
     </md-input-container>
