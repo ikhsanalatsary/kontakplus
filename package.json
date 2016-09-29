@@ -9,7 +9,8 @@
     "webpack": "webpack --bail --progress --profile",
     "dev": "npm run webpack && nodemon --exec babel-node server/index.js",
     "build": "webpack --bail --progress --profile && babel server --out-dir dist/server --source-maps inline --copy-files",
-    "start": "npm run build && node dist/server/index.js",
+    "postinstall": "npm run build",
+    "start": "node dist/server/index.js",
     "test:server": "mocha -w --timeout 10000 --compilers js:babel-register server/test",
     "test:client": "karma start"
   },
