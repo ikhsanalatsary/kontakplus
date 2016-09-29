@@ -33,6 +33,11 @@ body > md-toast {
   margin: auto !important;
 }
 
+[md-scroll-shrink] {
+  position:fixed;
+  top:0;
+}
+
 .fixed {
   position:fixed !important;
 }

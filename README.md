@@ -4,6 +4,8 @@ Problem set NodeJS ini adalah aplikasi managemen kontak berbasis REST API dengan
 
 Sumber Tantangan dari [codepolitan]
 
+Demo App [Kontakplus]
+
 ### Todo
 
 * Buat Testing di client
@@ -20,6 +22,9 @@ Sumber Tantangan dari [codepolitan]
 * Basic-Auth
 * Body-Parser
 * Btoa
+* checklist-model
+* compression
+* errorhandler
 * Express
 * lf-ng-md-file-input
 * Lodash
@@ -31,17 +36,28 @@ Sumber Tantangan dari [codepolitan]
 
 ### Dev-Depedencies
 * Faker
+* Angular Mocks
 * Babel-cli
 * Babel-Preset-Es2015
 * Chai
+* Copy webpack plugin
 * Css-loader
+* Extract-text-webpack-plugin
 * File-loader
 * Ghooks
+* html-webpack-plugin
+* Jasmine core
 * JSCS
 * Json-loader
+* karma
+* karma-chrome-launcher
+* karma-jasmine
+* karma-sourcemap-loader
+* Karma webpack
 * Mocha
 * Nodemon
 * Raw-loader
+* rimraf
 * Style-loader
 * Supertest
 * Titlegen
@@ -60,11 +76,17 @@ $ npm install -d atau npm i
 $ npm run dev
 ```
 
-### Cara tes
+### Cara tes server
 Setelah server berjalan pada localhost dengan port 3000. maka bisa menjalankan tes untuk servernya.
 
 ```sh
-$ npm test
+$ npm run test:server
+```
+
+### Cara tes client
+
+```sh
+$ npm run test:client
 ```
 
 ### Kriteria Utama
@@ -83,3 +105,4 @@ Menampilkan pencarian kontak berdasarkan name, email, phone, address, dan compan
 
 
    [codepolitan]: <https://www.codepolitan.com/problemset-nodejs-dasar>
+   [Kontakplus]: <https://kontakplus.herokuapp.com>
