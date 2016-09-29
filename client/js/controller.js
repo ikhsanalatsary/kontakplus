@@ -40,9 +40,9 @@ export default class ContactsCtrl {
           this.confav = res.data;
         }, (res) => {
           if (res.status == 404) {
-            this.$log('You have no favorite contact');
+            this.$log.log('You have no favorite contact');
           } else {
-            this.$log(res);
+            this.$log.log(res);
           }
 
         });
