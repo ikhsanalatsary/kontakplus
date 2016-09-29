@@ -2,14 +2,15 @@ import 'sweetalert/dist/sweetalert.css';
 import swal from 'sweetalert';
 
 export default class ContactsCtrl {
-  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast) {
+  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast, $log, $document) {
     this.$rootScope = $rootScope;
     this.$stateParams = $stateParams;
     this.ContactServices = ContactServices;
     this.$state = $state;
     this.$mdToast = $mdToast;
+    this.$log = $log;
     this.newRecord = true;
-    if (typeof $stateParams._id !== 'undefined') {
+    if (angular.isDefined($stateParams._id)) {
       this.newRecord = false;
       this.person = person.data;
     }
@@ -39,21 +40,24 @@ export default class ContactsCtrl {
           this.confav = res.data;
         }, (res) => {
           if (res.status == 404) {
-            console.log('You have no favorite contact');
+            this.$log('You have no favorite contact');
           } else {
-            console.log(res);
+            this.$log(res);
           }
 
         });
     };
+
+    // Always on top when state change
+    $rootScope.$on('$stateChangeSuccess', () => {
+      $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
+    });
 
     this.$rootScope.$on('findContacts', () => {
       this.getContacts();
       this.getConFav();
     });
 
-    // this.getContacts();
-    // this.getConFav();
     this.$rootScope.$emit('findContacts', {});
   }
 
@@ -74,9 +78,13 @@ export default class ContactsCtrl {
         if (isConfirm) {
           this.ContactServices.delete(contactId)
             .then(res => {
-              if (res.status == 200) {
-                this.$rootScope.$emit('findContacts', {});
-              }
+              this.$rootScope.$emit('findContacts', {});
+              this.$mdToast.show(
+                this.$mdToast.simple()
+                  .textContent('Successfully deleted')
+                  .position('top right')
+                  .hideDelay(3000)
+                );
             }, handleError);
         } else {
           swal('Cancelled', 'Your contact is safe :)', 'error');
@@ -93,10 +101,9 @@ export default class ContactsCtrl {
   // Submit Contact method
   addContact() {
     var { ContactServices, $state, contact, files, $mdToast } = this;
-    if (typeof contact.name === 'undefined') return;
+    if (!angular.isDefined(contact.name)) return;
     ContactServices.insert(contact, files)
       .then(res => {
-        // console.log(res.data);
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
@@ -114,7 +121,6 @@ export default class ContactsCtrl {
     var { ContactServices, $state, person, files, $mdToast } = this;
     ContactServices.update(person, files)
       .then(res => {
-        // console.log(res.data);
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
@@ -132,7 +138,6 @@ export default class ContactsCtrl {
     this.contact.favorite = val;
     ContactServices.patch($stateParams._id, this.contact)
       .then(res => {
-        // console.log(res);
         $mdToast.show(
           $mdToast.simple()
             .textContent('Success changed')
@@ -230,7 +235,7 @@ export default class ContactsCtrl {
                 $mdToast.simple()
                   .textContent('Successfully deleted')
                   .position('top left')
-                  .hideDelay(3000)
+                  .hideDelay(1000)
                 );
               this.$rootScope.$emit('findContacts', {});
             }
@@ -269,6 +274,8 @@ ContactsCtrl.$inject = [
   'ContactServices',
   'person',
   '$mdToast',
+  '$log',
+  '$document',
 ];
 
 function handleError(res) {

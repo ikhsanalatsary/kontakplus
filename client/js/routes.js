@@ -1,6 +1,13 @@
-export default function routes($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue');
+
+  // Enable browser color
+  $mdThemingProvider.enableBrowserColor({
+    theme: 'default',
+    palette: 'primary',
+  });
+
   $stateProvider
     .state({
       name: 'contacts',
@@ -24,11 +31,7 @@ export default function routes($stateProvider, $urlRouterProvider, $mdThemingPro
       template: require('../contacts.detail.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'contact',
-      resolve: {
-        person(ContactServices, $stateParams) {
-          return ContactServices.findOne($stateParams._id);
-        },
-      },
+      resolve: { person },
     })
     .state({
       name: 'contacts.add',
@@ -43,15 +46,25 @@ export default function routes($stateProvider, $urlRouterProvider, $mdThemingPro
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'vm',
-      resolve: {
-        person(ContactServices, $stateParams) {
-          return ContactServices.findOne($stateParams._id);
-        },
-      },
+      resolve: { person },
     });
+  $locationProvider.html5Mode(true);
   $urlRouterProvider.when('', 'contacts/list');
   $urlRouterProvider.when('/', 'contacts/list');
   $urlRouterProvider.otherwise('/contacts/list');
 };
 
-routes.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
+routes.$inject = [
+  '$stateProvider',
+  '$locationProvider',
+  '$urlRouterProvider',
+  '$mdThemingProvider',
+];
+
+function person(ContactServices, $stateParams) {
+  return ContactServices.findOne($stateParams._id);
+}
+
+person.$inject = ['ContactServices', '$stateParams'];
+
+export default routes;

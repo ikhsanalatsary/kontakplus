@@ -35,7 +35,7 @@ export default class ContactServices {
       'Content-Type': undefined,
     };
     var fd = new FormData();
-    if (typeof files !== 'undefined') {
+    if (angular.isDefined(files)) {
       angular.forEach(files, (obj) => {
         fd.append('avatar', obj.lfFile);
       });
@@ -57,7 +57,7 @@ export default class ContactServices {
       'Content-Type': undefined,
     };
     var fd = new FormData();
-    if (typeof files !== 'undefined') {
+    if (angular.isDefined(files)) {
       angular.forEach(files, (obj) => {
         fd.append('avatar', obj.lfFile);
       });

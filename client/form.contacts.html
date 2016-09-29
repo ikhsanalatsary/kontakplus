@@ -132,14 +132,14 @@
       </div>
 
       <div>
-        <md-button type="submit" ng-click="vm.updateContact()">Save</md-button>
+        <md-button aria-label="submit" type="submit" class="md-primary md-hue-3" ng-click="vm.updateContact()">
+          <md-icon md-font-set="material-icons">save</md-icon>
+          Save
+        </md-button>
       </div>
 
     </form>
-
     <br>
-    <pre>contact = {{vm.person | json}}</pre>
-    <pre>contact = {{vm.files | json}}</pre>
   </md-content>
 </div>
 
@@ -286,13 +286,14 @@
       </md-input-container>
 
       <div>
-        <md-button aria-label="submit" type="submit" ng-click="vm.addContact()">Save</md-button>
+        <md-button aria-label="submit" type="submit" class="md-primary md-hue-3" ng-click="vm.addContact()">
+          <md-icon md-font-set="material-icons">save</md-icon>
+          Save
+        </md-button>
       </div>
 
     </form>
 
     <br>
-    <pre>contact = {{vm.contact | json}}</pre>
-    <pre>image = {{vm.files | json}}</pre>
   </md-content>
 </div>

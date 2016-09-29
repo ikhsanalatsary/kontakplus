@@ -3,5 +3,6 @@
   "disallowQuotedKeysInObjects": false,
   "validateQuoteMarks": false,
   "validateIndentation": false,
-  "requirePaddingNewLinesAfterBlocks": false
+  "requirePaddingNewLinesAfterBlocks": false,
+  "maximumLineLength": false
 }
