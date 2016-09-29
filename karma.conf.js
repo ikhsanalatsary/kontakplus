@@ -30,20 +30,7 @@ module.exports = function (config) {
       './client/js/*spec.js': ['webpack', 'sourcemap'],
     },
 
-    // webpack module
-    webpack: {
-      module: {
-        loaders: [
-          { test: /\.js$/, loader: 'babel', query: { compact: false } },
-          { test: /\.css$/, loader: "style-loader!css-loader" },
-          { test: /\.json$/, loader: "json-loader" },
-          { test: /\.png$/, loader: "url-loader?limit=100000" },
-          { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file' },
-          { test: /\.html$/, loader: 'raw' },
-        ],
-      },
-      watch: true,
-    },
+    webpack: require('./webpack.config.babel'),
 
     // webpackServer: {
     //   noInfo: true
