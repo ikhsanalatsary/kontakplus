@@ -76,6 +76,16 @@ $ npm install -d atau npm i
 $ npm run dev
 ```
 
+### Build aplikasi
+
+```sh
+$ cd nodejs-problemset
+$ npm install -d atau npm i
+$ npm run build
+$ node dist/server
+```
+
+
 ### Cara tes server
 Setelah server berjalan pada localhost dengan port 3000. maka bisa menjalankan tes untuk servernya.
 
