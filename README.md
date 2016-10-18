@@ -4,7 +4,7 @@ Problem set NodeJS ini adalah aplikasi managemen kontak berbasis REST API dengan
 
 Sumber Tantangan dari [codepolitan]
 
-Demo App [Kontakplus]
+Demo App [Kontakplus in heroku] or [Kontakplus in zeit]
 
 ### Todo
 
@@ -115,4 +115,5 @@ Menampilkan pencarian kontak berdasarkan name, email, phone, address, dan compan
 
 
    [codepolitan]: <https://www.codepolitan.com/problemset-nodejs-dasar>
-   [Kontakplus]: <https://kontakplus.herokuapp.com>
+   [Kontakplus in heroku]: <https://kontakplus.herokuapp.com>
+   [Kontakplus in zeit]: <https://kontakplus.now.sh>
