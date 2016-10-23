@@ -23,12 +23,7 @@ module.exports = (function makeWebpackConfig() {
    * Should be an empty object if it's generating a test build
    * Karma will set this when it's a test build
    */
-	config.entry = isTest ? {} : [
-		'./client/app.js',
-		'./client/js/controller.js',
-		'./client/js/controller.js',
-		'./client/js/directives.js',
-	];
+	config.entry = isTest ? {} : { app: './client/app.js' };
 
 	/**
    * Output
