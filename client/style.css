@@ -162,3 +162,26 @@ text-align: left;
   padding-left:24px;
   color: rgb(63,81,181);
 }
+
+/* Toast style */
+md-toast.md-error-toast-theme .md-toast-content {
+	background-color: maroon !important;
+	color: #fff !important;
+}
+
+md-toast.md-top {
+	z-index: 10000;
+	margin-top: 5%;
+	text-align: center;
+	display:inline-block;
+	position:fixed;
+	left:50%;
+	overflow: visible;
+}
+
+.md-toast-content {
+	background-color: #f2f2f2 !important;
+	color: #768495 !important;
+	position:relative;
+	left:-50%;
+}

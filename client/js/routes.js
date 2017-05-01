@@ -1,4 +1,5 @@
 function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemingProvider) {
+  /* eslint-disable global-require */
   $mdThemingProvider.theme('default')
     .primaryPalette('blue');
 
@@ -52,7 +53,7 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
   $urlRouterProvider.when('', 'contacts/list');
   $urlRouterProvider.when('/', 'contacts/list');
   $urlRouterProvider.otherwise('/contacts/list');
-};
+}
 
 routes.$inject = [
   '$stateProvider',

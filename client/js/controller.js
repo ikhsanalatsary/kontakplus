@@ -1,15 +1,14 @@
-import 'sweetalert/dist/sweetalert.css';
-import swal from 'sweetalert';
-
 export default class ContactsCtrl {
-  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast, $log, $document) {
+  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast, $log, $mdDialog) {
     this.$rootScope = $rootScope;
     this.$stateParams = $stateParams;
     this.ContactServices = ContactServices;
     this.$state = $state;
     this.$mdToast = $mdToast;
+    this.$mdDialog = $mdDialog;
     this.$log = $log;
     this.newRecord = true;
+    this.position = 'top';
     if (angular.isDefined($stateParams._id)) {
       this.newRecord = false;
       this.person = person.data;
@@ -23,74 +22,60 @@ export default class ContactsCtrl {
     this.contact.email = [{ option: 'Personal' }];
     this.contact.address = [{ option: 'Home' }];
     this.option = {
-      "browseIconCls": "myBrowse",
-      "captionIconCls": "myCaption",
+      browseIconCls: 'myBrowse',
+      captionIconCls: 'myCaption',
     };
 
     this.getContacts = () => {
       this.ContactServices.find()
-        .then(res => {
+        .then((res) => {
           this.contacts = res.data;
-        }, handleError);
+        }, handleError.bind(this));
     };
 
     this.getConFav = () => {
       this.ContactServices.findFav()
-        .then(res => {
+        .then((res) => {
           this.confav = res.data;
         }, (res) => {
-          if (res.status == 404) {
+          if (res.status === 404) {
             this.$log.log('You have no favorite contact');
           } else {
             this.$log.log(res);
           }
-
         });
     };
 
     // Always on top when state change
     $rootScope.$on('$stateChangeSuccess', () => {
-      $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     });
 
-    this.$rootScope.$on('findContacts', () => {
-      this.getContacts();
-      this.getConFav();
-    });
-
-    this.$rootScope.$emit('findContacts', {});
+    this.getContacts();
+    this.getConFav();
   }
 
   // Remove Method by {_id}
   removeContact(contactId) {
-    swal({
-        title: 'Are you sure?',
-        text: 'You will delete this contact!',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#DD6B55',
-        confirmButtonText: 'Yes, I am sure!',
-        cancelButtonText: 'No, cancel it!',
-        closeOnConfirm: true,
-        closeOnCancel: false,
-    },
-      (isConfirm) => {
-        if (isConfirm) {
-          this.ContactServices.delete(contactId)
-            .then(res => {
-              this.$rootScope.$emit('findContacts', {});
-              this.$mdToast.show(
-                this.$mdToast.simple()
-                  .textContent('Successfully deleted')
-                  .position('top right')
-                  .hideDelay(3000)
-                );
-            }, handleError);
-        } else {
-          swal('Cancelled', 'Your contact is safe :)', 'error');
-          return;
-        }
-      });
+    const confirm = this.$mdDialog.confirm()
+      .title('Are you sure to delete this records ?')
+      .ariaLabel('Confirmation')
+      .ok('Delete')
+      .cancel('Cancel');
+
+    this.$mdDialog.show(confirm).then(() => {
+      this.ContactServices.delete(contactId)
+        .then(() => {
+          this.$mdToast.show(
+            this.$mdToast.simple()
+              .textContent('Successfully deleted')
+              .position(this.position)
+              .hideDelay(3000)
+            );
+          this.$state.reload();
+        }, handleError.bind(this));
+    });
   }
 
   // Go to form Create
@@ -100,62 +85,61 @@ export default class ContactsCtrl {
 
   // Submit Contact method
   addContact() {
-    var { ContactServices, $state, contact, files, $mdToast } = this;
+    const { ContactServices, $state, contact, files, $mdToast, position } = this;
     if (!angular.isDefined(contact.name)) return;
     ContactServices.insert(contact, files)
-      .then(res => {
+      .then(() => {
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
             .textContent('Successfully created')
-            .position('top left')
+            .position(position)
             .hideDelay(3000)
           );
 
-        this.$rootScope.$emit('findContacts', {});
-      }, handleError);
+        this.$state.reload();
+      }, handleError.bind(this));
   }
 
   // Update Contact method
   updateContact() {
-    var { ContactServices, $state, person, files, $mdToast } = this;
+    const { ContactServices, $state, person, files, $mdToast, position } = this;
     ContactServices.update(person, files)
-      .then(res => {
+      .then(() => {
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
             .textContent('Successfully updated')
-            .position('top right')
+            .position(position)
             .hideDelay(3000)
           );
-        this.$rootScope.$emit('findContacts', {});
-      }, handleError);
+        this.$state.reload();
+      }, handleError.bind(this));
   }
 
   // Set favorite method
   addFavorite(val) {
-    var { ContactServices, $stateParams, $mdToast } = this;
+    const { ContactServices, $stateParams, $mdToast, position } = this;
     this.contact.favorite = val;
     ContactServices.patch($stateParams._id, this.contact)
-      .then(res => {
+      .then(() => {
         $mdToast.show(
           $mdToast.simple()
             .textContent('Success changed')
-            .position('top left')
+            .position(position)
             .hideDelay(3000)
           );
-        this.$rootScope.$emit('findContacts', {});
-      }, handleError);
+        this.$state.reload();
+      }, handleError.bind(this));
   }
 
   // Add field phone
   addNewPhone() {
     if (this.newRecord) {
-      this.contact.phone.push({ 'option': 'Mobile' });
+      this.contact.phone.push({ option: 'Mobile' });
     } else {
-      this.person.phone.push({ 'option': 'Mobile' });
+      this.person.phone.push({ option: 'Mobile' });
     }
-
   }
 
   // Remove field phone
@@ -165,17 +149,15 @@ export default class ContactsCtrl {
     } else {
       this.person.phone.splice(item, 1);
     }
-
   }
 
   // Add field email
   addNewEmail() {
     if (this.newRecord) {
-      this.contact.email.push({ 'option': 'Personal' });
+      this.contact.email.push({ option: 'Personal' });
     } else {
-      this.person.email.push({ 'option': 'Personal' });
+      this.person.email.push({ option: 'Personal' });
     }
-
   }
 
   // Remove field email
@@ -185,17 +167,15 @@ export default class ContactsCtrl {
     } else {
       this.person.email.splice(item, 1);
     }
-
   }
 
   // Add field address
   addNewAddress() {
     if (this.newRecord) {
-      this.contact.address.push({ 'option': 'Home' });
+      this.contact.address.push({ option: 'Home' });
     } else {
-      this.person.address.push({ 'option': 'Home' });
+      this.person.address.push({ option: 'Home' });
     }
-
   }
 
   // Remove field address
@@ -205,7 +185,6 @@ export default class ContactsCtrl {
     } else {
       this.person.address.splice(item, 1);
     }
-
   }
 
   // Checlist box All contact
@@ -224,23 +203,31 @@ export default class ContactsCtrl {
 
   // Remove / delete selected contact
   deleteAll() {
-    var arr = this.superhero;
-    var $mdToast = this.$mdToast;
+    const arr = this.superhero;
+    const $mdToast = this.$mdToast;
     if (arr.length > 1) {
-      return arr.forEach(contactId => {
-        this.ContactServices.delete(contactId)
-          .then(res => {
-            if (res.status == 200) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .textContent('Successfully deleted')
-                  .position('top left')
-                  .hideDelay(1000)
-                );
-              this.$rootScope.$emit('findContacts', {});
-            }
-          }, handleError)
-          .finally(() => this.superhero = []);
+      const confirm = this.$mdDialog.confirm()
+        .title('Are you sure to delete this records ?')
+        .ariaLabel('Confirmation')
+        .ok('Delete')
+        .cancel('Cancel');
+
+      this.$mdDialog.show(confirm).then(() => {
+        arr.forEach((contactId) => {
+          this.ContactServices.delete(contactId)
+            .then((res) => {
+              if (res.status === 200) {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent('Successfully deleted')
+                    .position(this.position)
+                    .hideDelay(1000)
+                  );
+                this.$state.reload();
+              }
+            })
+            .finally(() => (this.superhero = []));
+        });
       });
     }
   }
@@ -275,14 +262,26 @@ ContactsCtrl.$inject = [
   'person',
   '$mdToast',
   '$log',
-  '$document',
+  '$mdDialog',
 ];
 
 function handleError(res) {
+  const $mdToast = this.$mdToast;
   if (res.status !== -1) {
-    swal('Error ', res.status + ' status ' + res.statusText, 'error');
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent(`${res.status} status ${res.statusText}`)
+        .position(this.position)
+        .hideDelay(1000)
+        .theme('error-toast')
+      );
   } else {
-    swal('Error ', 'Connection lost', 'error');
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent('Connection lost')
+        .position(this.position)
+        .hideDelay(1000)
+        .theme('error-toast')
+      );
   }
-
 }

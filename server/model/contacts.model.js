@@ -1,5 +1,3 @@
-'use strict';
-
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
@@ -18,7 +16,7 @@ const contactSchema = new Schema({
 });
 
 contactSchema
-  .pre('save', function (next) {
+  .pre('save', (next) => {
     if (this.isNew) return next();
     this.updated = Date.now();
     return next();

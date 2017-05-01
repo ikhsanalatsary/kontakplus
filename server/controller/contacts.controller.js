@@ -1,14 +1,11 @@
-'use strict';
+import Contact from '../model/contacts.model';
 
-import mongoose from 'mongoose';
-import Contact from '../model/contacts.model.js';
-
-exports.create = (req, res, next) => {
+exports.create = (req, res) => {
   const body = req.body;
   if (req.file) body.avatar = req.file.filename;
 
-  var bodyTitle;
-  var bodyCompany;
+  let bodyTitle;
+  let bodyCompany;
   let bodyName = JSON.parse(body.name);
   let bodyEmail = JSON.parse(body.email);
   let bodyPhone = JSON.parse(body.phone);

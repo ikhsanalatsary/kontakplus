@@ -1,6 +1,6 @@
-const admin = require('../basic').admin;
+import { admin } from '../basic.json';
 const Base64Str = btoa(`${admin.user}:${admin.password}`);
-const headers = { 'Authorization': 'Basic ' + Base64Str };
+const headers = { Authorization: `Basic ${Base64Str}` };
 
 export default class ContactServices {
   constructor($http) {
@@ -10,15 +10,12 @@ export default class ContactServices {
 
   // GET method
   find() {
-    var data = {
-       name: 'Katy Perry',
-    };
     return this.$http.get(this.api, { headers });
   }
 
   findFav() {
-    var data = {
-       favorite: true,
+    const data = {
+      favorite: true,
     };
     return this.$http.get(this.api, { params: data, headers });
   }
@@ -30,7 +27,7 @@ export default class ContactServices {
 
   // POST method
   insert(data, files) {
-    let headers = {
+    const headers = {
       'Authorization': 'Basic ' + Base64Str,
       'Content-Type': undefined,
     };
