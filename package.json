@@ -5,13 +5,14 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "jscs": "jscs .",
-    "webpack": "webpack --bail --progress --profile --colors",
-    "dev": "npm run webpack && nodemon --exec babel-node server/index.js",
     "build": "rimraf dist && webpack --bail --progress --profile --colors && babel server --out-dir dist/server --source-maps inline --copy-files",
+    "dev": "npm run webpack && nodemon --exec babel-node server/index.js",
+    "jscs": "jscs .",
+    "lint": "eslint --ignore-path .gitignore webpack.config.babel.js -- .",
     "start": "npm run build && node dist/server/index.js",
     "test:server": "mocha -w --timeout 10000 --compilers js:babel-register server/test",
-    "test:client": "karma start"
+    "test:client": "karma start",
+    "webpack": "webpack --bail --progress --profile --colors"
   },
   "author": "Abdul Fattah Ikhsan <ikhsannetwork@gmail.com> (http://ikhsannetwork.com/)",
   "license": "MIT",
@@ -41,16 +42,20 @@
     "Faker": "0.7.2",
     "angular-mocks": "1.5.8",
     "babel-cli": "6.14.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "6.2.5",
     "babel-preset-es2015": "6.14.0",
     "chai": "3.5.0",
     "copy-webpack-plugin": "3.0.1",
     "css-loader": "0.25.0",
+    "eslint": "3.19.0",
+    "eslint-config-airbnb-base": "11.1.3",
+    "eslint-plugin-import": "2.2.0",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.9.0",
     "ghooks": "1.3.2",
     "html-webpack-plugin": "2.22.0",
     "jasmine-core": "2.5.2",
-    "jscs": "3.0.7",
     "json-loader": "0.5.4",
     "karma": "1.3.0",
     "karma-chrome-launcher": "2.0.0",
@@ -69,10 +74,5 @@
   "engines": {
     "node": ">=4.1.1",
     "npm": ">=2.14.4"
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run jscs"
-    }
   }
 }
