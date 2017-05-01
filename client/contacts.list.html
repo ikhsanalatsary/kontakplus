@@ -56,7 +56,6 @@
             <img ng-src="uploads/{{contact.avatar || 'default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
               <p>{{contact.name}}</p>
             <md-checkbox class="md-secondary" aria-label="Select" checklist-model="$this.superhero" checklist-value="contact._id"></md-checkbox>
-            <md-icon class="md-warn md-secondary" aria-label="delete contact" ng-click="$this.removeContact(contact._id)" md-font-set="material-icons"> clear </md-icon>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>
         </md-list>
@@ -75,7 +74,6 @@
             ng-click="$this.goDetail(confav._id)">
             <img ng-src="uploads/{{confav.avatar || 'default-img.png'}}" class="md-avatar" alt="{{confav.name}}" />
               <p>{{confav.name}}</p>
-            <md-icon class="md-warn md-secondary" aria-label="delete contact" ng-click="$this.removeContact(confav._id)" md-font-set="material-icons"> clear </md-icon>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>
         </md-list>

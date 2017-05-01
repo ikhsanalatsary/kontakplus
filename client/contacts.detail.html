@@ -11,6 +11,9 @@
       <md-button ui-sref="contacts.edit({ _id: contact.person._id })" class="md-tools mini" aria-label="Edit Contact">
         <md-icon md-font-set="material-icons">edit</md-icon>
       </md-button>
+      <md-button ng-click="contact.removeContact(contact.person._id)" class="md-tools mini" aria-label="Delete Contact">
+        <md-icon class="md-warn md-secondary" md-font-set="material-icons">delete</md-icon>
+      </md-button>
     </div>
   </md-toolbar>
   <div class="main-fab">

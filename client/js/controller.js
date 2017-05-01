@@ -71,14 +71,15 @@ export default class ContactsCtrl {
     this.$mdDialog.show(confirm).then(() => {
       this.ContactServices.delete(contactId)
         .then(() => {
+          this.$state.go('contacts.list');
           this.$mdToast.show(
             this.$mdToast.simple()
               .textContent('Successfully deleted')
               .position(this.position)
               .hideDelay(3000)
             );
-          this.$state.reload();
-        }, handleError.bind(this));
+        }, handleError.bind(this))
+        .finally(this.$rootScope.$emit('findContacts', {}));
     });
   }
 
