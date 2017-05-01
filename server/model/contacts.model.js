@@ -16,7 +16,7 @@ const contactSchema = new Schema({
 });
 
 contactSchema
-  .pre('save', (next) => {
+  .pre('save', function pre(next) {
     if (this.isNew) return next();
     this.updated = Date.now();
     return next();

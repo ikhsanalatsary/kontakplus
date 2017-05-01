@@ -52,8 +52,12 @@ export default class ContactsCtrl {
       document.documentElement.scrollTop = 0;
     });
 
-    this.getContacts();
-    this.getConFav();
+    this.$rootScope.$on('findContacts', () => {
+      this.getContacts();
+      this.getConFav();
+    });
+
+    this.$rootScope.$emit('findContacts', {});
   }
 
   // Remove Method by {_id}
@@ -96,9 +100,8 @@ export default class ContactsCtrl {
             .position(position)
             .hideDelay(3000)
           );
-
-        this.$state.reload();
-      }, handleError.bind(this));
+      }, handleError.bind(this))
+      .finally(this.$rootScope.$emit('findContacts', {}));
   }
 
   // Update Contact method

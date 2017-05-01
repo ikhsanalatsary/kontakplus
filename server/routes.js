@@ -1,10 +1,10 @@
-import express from 'express';
+import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import basicAuth from './middleware';
 import controller from './controller/contacts.controller';
 
-const router = express.Router();
+const router = Router();
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, path.resolve('client/uploads'));
