@@ -131,7 +131,6 @@ export default class ContactsCtrl {
         person.avatar = res.data.avatar;
         ContactServices.update(person)
           .then(() => {
-            $state.go('contacts.list');
             $mdToast.show(
               $mdToast.simple()
                 .textContent('Successfully updated')
@@ -152,8 +151,8 @@ export default class ContactsCtrl {
               .position(position)
               .hideDelay(3000)
             );
-          this.$state.reload();
-        }, this.handleError);
+        }, this.handleError)
+        .finally(this.$rootScope.$emit('findContacts', {}));
     }
   }
 
