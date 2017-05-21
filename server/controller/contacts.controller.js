@@ -3,29 +3,7 @@ import Contact from '../model/contacts.model';
 
 exports.create = (req, res) => {
   const body = req.body;
-  if (req.file) body.avatar = req.file.filename;
-
-  let bodyTitle;
-  let bodyCompany;
-  const bodyName = JSON.parse(body.name);
-  const bodyEmail = JSON.parse(body.email);
-  const bodyPhone = JSON.parse(body.phone);
-  const bodyAddress = JSON.parse(body.address);
-  if (typeof body.title !== 'undefined') bodyTitle = JSON.parse(body.title);
-  if (typeof body.company !== 'undefined') bodyCompany = JSON.parse(body.company);
-
-  const { avatar } = body;
-  const person = {
-    name: bodyName,
-    title: bodyTitle,
-    email: bodyEmail,
-    phone: bodyPhone,
-    address: bodyAddress,
-    company: bodyCompany,
-    avatar,
-  };
-
-  const contact = new Contact(person);
+  const contact = new Contact(body);
 
   contact.save((err) => {
     if (err) return handleError(res, err);
@@ -55,19 +33,7 @@ exports.index = (req, res) => {
 exports.update = (req, res) => {
   const body = req.body;
   Contact.findById(req.params.id, (err, contact) => {
-    if (req.file) {
-      contact.avatar = req.file.filename;
-    }
-
-    contact.name = JSON.parse(body.name);
-    contact.email = JSON.parse(body.email);
-    contact.phone = JSON.parse(body.phone);
-    contact.address = JSON.parse(body.address);
-    let bodyTitle;
-    let bodyCompany;
-    if (typeof body.title !== 'undefined') bodyTitle = JSON.parse(body.title);
-    if (typeof body.company !== 'undefined') bodyCompany = JSON.parse(body.company);
-
+    contact = Object.assign(contact, body);
     contact.save((err, result) => {
       if (err) return res.status(400).json(err);
       return res.status(200).json(result);
@@ -97,3 +63,8 @@ exports.patch = (req, res) => {
 function handleError(res, err) {
   return res.status(500).json(err);
 }
+
+exports.upload = (req, res) => {
+  // upload here
+  if (req.file) res.json({ avatar: req.file.filename });
+};

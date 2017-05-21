@@ -9,6 +9,7 @@ export default class ContactsCtrl {
     this.$log = $log;
     this.newRecord = true;
     this.position = 'top';
+    this.handleError = handleError.bind(this);
     if (angular.isDefined($stateParams._id)) {
       this.newRecord = false;
       this.person = person.data;
@@ -30,7 +31,7 @@ export default class ContactsCtrl {
       this.ContactServices.find()
         .then((res) => {
           this.contacts = res.data;
-        }, handleError.bind(this));
+        }, this.handleError);
     };
 
     this.getConFav = () => {
@@ -78,7 +79,7 @@ export default class ContactsCtrl {
               .position(this.position)
               .hideDelay(3000)
             );
-        }, handleError.bind(this))
+        }, this.handleError)
         .finally(this.$rootScope.$emit('findContacts', {}));
     });
   }
@@ -92,33 +93,68 @@ export default class ContactsCtrl {
   addContact() {
     const { ContactServices, $state, contact, files, $mdToast, position } = this;
     if (!angular.isDefined(contact.name)) return;
-    ContactServices.insert(contact, files)
-      .then(() => {
-        $state.go('contacts.list');
-        $mdToast.show(
-          $mdToast.simple()
-            .textContent('Successfully created')
-            .position(position)
-            .hideDelay(3000)
-          );
-      }, handleError.bind(this))
-      .finally(this.$rootScope.$emit('findContacts', {}));
+    if (angular.isArray(files) && files.length > 0) {
+      ContactServices.upload(files).then((res) => {
+        contact.avatar = res.data.avatar;
+        ContactServices.insert(contact)
+          .then(() => {
+            $state.go('contacts.list');
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('Successfully created')
+                .position(position)
+                .hideDelay(3000)
+              );
+          }, this.handleError)
+          .finally(this.$rootScope.$emit('findContacts', {}));
+      });
+    } else {
+      ContactServices.insert(contact)
+        .then(() => {
+          $state.go('contacts.list');
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent('Successfully created')
+              .position(position)
+              .hideDelay(3000)
+            );
+        }, this.handleError)
+        .finally(this.$rootScope.$emit('findContacts', {}));
+    }
   }
 
   // Update Contact method
   updateContact() {
     const { ContactServices, $state, person, files, $mdToast, position } = this;
-    ContactServices.update(person, files)
-      .then(() => {
-        $state.go('contacts.list');
-        $mdToast.show(
-          $mdToast.simple()
-            .textContent('Successfully updated')
-            .position(position)
-            .hideDelay(3000)
-          );
-        this.$state.reload();
-      }, handleError.bind(this));
+    if (angular.isArray(files) && files.length > 0) {
+      ContactServices.upload(files).then((res) => {
+        person.avatar = res.data.avatar;
+        ContactServices.update(person)
+          .then(() => {
+            $state.go('contacts.list');
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('Successfully updated')
+                .position(position)
+                .hideDelay(3000)
+              );
+            $state.go('contacts.list');
+          }, this.handleError)
+          .finally(this.$rootScope.$emit('findContacts', {}));
+      });
+    } else {
+      ContactServices.update(person)
+        .then(() => {
+          $state.go('contacts.list');
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent('Successfully updated')
+              .position(position)
+              .hideDelay(3000)
+            );
+          this.$state.reload();
+        }, this.handleError);
+    }
   }
 
   // Set favorite method
@@ -134,7 +170,7 @@ export default class ContactsCtrl {
             .hideDelay(3000)
           );
         this.$state.reload();
-      }, handleError.bind(this));
+      }, this.handleError);
   }
 
   // Add field phone

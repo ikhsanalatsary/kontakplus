@@ -24,8 +24,9 @@ const type = upload.single('avatar');
 router.use(basicAuth);
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', type, controller.create);
-router.put('/:id', type, controller.update);
+router.post('/', controller.create);
+router.post('/upload', type, controller.upload);
+router.put('/:id', controller.update);
 router.patch('/:id', controller.patch);
 router.delete('/:id', controller.delete);
 

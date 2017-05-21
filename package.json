@@ -10,7 +10,7 @@
     "jscs": "jscs .",
     "lint": "eslint --ignore-path .gitignore webpack.config.babel.js -- .",
     "start": "npm run build && node dist/server/index.js",
-    "test:server": "mocha -w --timeout 10000 --compilers js:babel-register server/test",
+    "test:server": "mocha --timeout 10000 --compilers js:babel-register server/test",
     "test:client": "karma start",
     "webpack": "webpack --bail --progress --profile --colors"
   },

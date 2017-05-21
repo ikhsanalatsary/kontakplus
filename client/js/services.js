@@ -26,48 +26,15 @@ export default class ContactServices {
   }
 
   // POST method
-  insert(data, files) {
-    const headers = {
-      'Authorization': 'Basic ' + Base64Str,
-      'Content-Type': undefined,
-    };
-    var fd = new FormData();
-    if (angular.isDefined(files)) {
-      angular.forEach(files, (obj) => {
-        fd.append('avatar', obj.lfFile);
-      });
-    }
-
-    for (let key in data) {
-      // Angular.toJson lebih ketat dibanding JsonStringify,
-      // hapus key '$$hashKey', pada object value Array
-      fd.append(key, angular.toJson(data[key]));
-    }
-
-    return this.$http.post(this.api, fd, { transformRequest: angular.identity, headers });
+  insert(contact) {
+    headers['Content-Type'] = 'application/json';
+    return this.$http.post(this.api, contact, { headers });
   }
 
   // PUT method
-  update(contact, files) {
-    let headers = {
-      'Authorization': 'Basic ' + Base64Str,
-      'Content-Type': undefined,
-    };
-    var fd = new FormData();
-    if (angular.isDefined(files)) {
-      angular.forEach(files, (obj) => {
-        fd.append('avatar', obj.lfFile);
-      });
-    }
-
-    for (let key in contact) {
-      fd.append(key, angular.toJson(contact[key]));
-    }
-
-    return this.$http.put(this.api + contact._id, fd, {
-      transformRequest: angular.identity,
-      headers,
-    });
+  update(contact) {
+    headers['Content-Type'] = 'application/json';
+    return this.$http.put(this.api + contact._id, contact, { headers });
   }
 
   // Show by {_id} method
@@ -78,6 +45,19 @@ export default class ContactServices {
   // Set Favorite method
   patch(contactId, data) {
     return this.$http.patch(this.api + contactId, data, { headers });
+  }
+
+  // upload image
+  upload(files) {
+    headers['Content-Type'] = undefined;
+    const fd = new FormData();
+    if (angular.isDefined(files)) {
+      angular.forEach(files, (obj) => {
+        fd.append('avatar', obj.lfFile);
+      });
+    }
+
+    return this.$http.post(`${this.api}upload`, fd, { transformRequest: angular.identity, headers });
   }
 }
 
