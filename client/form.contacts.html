@@ -6,6 +6,8 @@
         <md-icon md-font-set="material-icons">arrow_back</md-icon>
       </md-button>
       <h2 md-header-title flex>Edit {{vm.person.name}}</h2>
+      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.addContact()">
+        <md-icon md-font-set="material-icons">save</md-icon></md-button>
     </div>
   </md-toolbar>
   <br><br><br>
@@ -131,12 +133,7 @@
         </md-input-container>
       </div>
 
-      <div>
-        <md-button aria-label="submit" type="submit" class="md-primary md-hue-3" ng-click="vm.updateContact()">
-          <md-icon md-font-set="material-icons">save</md-icon>
-          Save
-        </md-button>
-      </div>
+      <div></div>
 
     </form>
     <br>
@@ -151,6 +148,8 @@
         <md-icon md-font-set="material-icons">arrow_back</md-icon>
       </md-button>
       <h2 md-header-title flex>Add new contact</h2>
+      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.addContact()">
+        <md-icon md-font-set="material-icons">save</md-icon></md-button>
     </div>
   </md-toolbar>
   <br><br><br>
@@ -285,12 +284,7 @@
           lf-placeholder="Choose avatar" lf-browse-label="Change" lf-option="vm.option" preview></lf-ng-md-file-input>
       </md-input-container>
 
-      <div>
-        <md-button aria-label="submit" type="submit" class="md-primary md-hue-3" ng-click="vm.addContact()">
-          <md-icon md-font-set="material-icons">save</md-icon>
-          Save
-        </md-button>
-      </div>
+      <div></div>
 
     </form>
 
