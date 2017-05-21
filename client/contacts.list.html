@@ -53,7 +53,7 @@
           </div>
           <md-list-item class="md-2-line contact-item noright" ng-repeat="(index, contact) in $this.contacts | filter: $this.searchContact"
             ng-click="$this.goDetail(contact._id)">
-            <img ng-src="uploads/{{contact.avatar || 'default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
+            <img ng-src="{{contact.avatar || 'uploads/default-img.png'}}" class="md-avatar" alt="{{contact.name}}" />
               <p>{{contact.name}}</p>
             <md-checkbox class="md-secondary" aria-label="Select" checklist-model="$this.superhero" checklist-value="contact._id"></md-checkbox>
             <md-divider ng-if="!$last"></md-divider>
@@ -72,7 +72,7 @@
           </p>
           <md-list-item ng-if="$this.confav" class="md-2-line contact-item noright" ng-repeat="(index, confav) in $this.confav | filter: $this.searchContact"
             ng-click="$this.goDetail(confav._id)">
-            <img ng-src="uploads/{{confav.avatar || 'default-img.png'}}" class="md-avatar" alt="{{confav.name}}" />
+            <img ng-src="{{confav.avatar || 'uploads/default-img.png'}}" class="md-avatar" alt="{{confav.name}}" />
               <p>{{confav.name}}</p>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>

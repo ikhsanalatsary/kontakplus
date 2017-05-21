@@ -35,7 +35,8 @@
     "lodash": "4.15.0",
     "mongoose": "4.5.10",
     "morgan": "1.7.0",
-    "multer": "1.2.0"
+    "multer": "1.2.0",
+    "multer-sharp": "0.1.1"
   },
   "devDependencies": {
     "Faker": "0.7.2",

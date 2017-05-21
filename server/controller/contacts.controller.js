@@ -1,5 +1,19 @@
 /* eslint-disable no-param-reassign */
+import multer from 'multer';
+import gcsSharp from 'multer-sharp';
 import Contact from '../model/contacts.model';
+import config from '../config';
+
+const storage = gcsSharp({
+  bucket: config.uploads.gcsUpload.bucket,
+  projectId: config.uploads.gcsUpload.projectId,
+  keyFilename: config.uploads.gcsUpload.keyFilename,
+  acl: config.uploads.gcsUpload.acl,
+  size: {
+    width: 1296,
+  },
+  max: true,
+});
 
 exports.create = (req, res) => {
   const body = req.body;
@@ -60,11 +74,18 @@ exports.patch = (req, res) => {
   });
 };
 
+exports.upload = (req, res) => {
+  // upload here
+  const upload = multer({ storage }).single('avatar');
+  upload(req, res, (uploadError) => {
+    if (uploadError) {
+      res.status(400).json({ message: 'Something was wrong while upload' });
+      return;
+    }
+    res.json({ avatar: req.file.path });
+  });
+};
+
 function handleError(res, err) {
   return res.status(500).json(err);
 }
-
-exports.upload = (req, res) => {
-  // upload here
-  if (req.file) res.json({ avatar: req.file.filename });
-};

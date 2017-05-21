@@ -10,6 +10,7 @@ export default class ContactsCtrl {
     this.newRecord = true;
     this.position = 'top';
     this.handleError = handleError.bind(this);
+    this.isList = $state.current.data.isList;
     if (angular.isDefined($stateParams._id)) {
       this.newRecord = false;
       this.person = person.data;
@@ -58,7 +59,9 @@ export default class ContactsCtrl {
       this.getConFav();
     });
 
-    this.$rootScope.$emit('findContacts', {});
+    if (this.isList) {
+      this.$rootScope.$emit('findContacts', {});
+    }
   }
 
   // Remove Method by {_id}

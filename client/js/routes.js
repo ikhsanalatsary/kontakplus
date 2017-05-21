@@ -25,6 +25,9 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       name: 'contacts.list',
       url: '/list',
       template: require('../contacts.list.html'),
+      data: {
+        isList: true,
+      },
     })
     .state({
       name: 'contacts.detail',
@@ -33,6 +36,9 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       controller: 'ContactsCtrl',
       controllerAs: 'contact',
       resolve: { person },
+      data: {
+        isList: false,
+      },
     })
     .state({
       name: 'contacts.add',
@@ -40,6 +46,9 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'vm',
+      data: {
+        isList: false,
+      },
     })
     .state({
       name: 'contacts.edit',
@@ -48,6 +57,9 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       controller: 'ContactsCtrl',
       controllerAs: 'vm',
       resolve: { person },
+      data: {
+        isList: false,
+      },
     });
   $locationProvider.html5Mode(true);
   $urlRouterProvider.when('', 'contacts/list');
