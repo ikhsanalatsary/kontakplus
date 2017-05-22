@@ -15,16 +15,18 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       abstract: true,
       url: '/contacts',
       template: '<ui-view/>',
-      controller: 'ContactsCtrl',
-      controllerAs: '$this',
-      resolve: {
-        person() {},
-      },
     })
     .state({
       name: 'contacts.list',
       url: '/list',
       template: require('../contacts.list.html'),
+      controller: 'ContactsCtrl',
+      controllerAs: '$this',
+      resolve: {
+        person: angular.noop,
+        getContacts,
+        getConFav,
+      },
       data: {
         isList: true,
       },
@@ -35,7 +37,11 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       template: require('../contacts.detail.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'contact',
-      resolve: { person },
+      resolve: {
+        person,
+        getContacts: angular.noop,
+        getConFav: angular.noop,
+      },
       data: {
         isList: false,
       },
@@ -46,6 +52,11 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'vm',
+      resolve: {
+        person: angular.noop,
+        getContacts: angular.noop,
+        getConFav: angular.noop,
+      },
       data: {
         isList: false,
       },
@@ -56,7 +67,11 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       template: require('../form.contacts.html'),
       controller: 'ContactsCtrl',
       controllerAs: 'vm',
-      resolve: { person },
+      resolve: {
+        person,
+        getContacts: angular.noop,
+        getConFav: angular.noop,
+      },
       data: {
         isList: false,
       },
@@ -79,5 +94,17 @@ function person(ContactServices, $stateParams) {
 }
 
 person.$inject = ['ContactServices', '$stateParams'];
+
+function getContacts(ContactServices) {
+  return ContactServices.find();
+}
+
+getContacts.$inject = ['ContactServices'];
+
+function getConFav(ContactServices) {
+  return ContactServices.findFav();
+}
+
+getConFav.$inject = ['ContactServices'];
 
 export default routes;

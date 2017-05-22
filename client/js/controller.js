@@ -1,5 +1,5 @@
 export default class ContactsCtrl {
-  constructor($rootScope, $stateParams, $state, ContactServices, person, $mdToast, $log, $mdDialog) {
+  constructor($rootScope, $stateParams, $state, ContactServices, person, getContacts, getConFav, $mdToast, $log, $mdDialog) {
     this.$rootScope = $rootScope;
     this.$stateParams = $stateParams;
     this.ContactServices = ContactServices;
@@ -11,11 +11,6 @@ export default class ContactsCtrl {
     this.position = 'top';
     this.handleError = handleError.bind(this);
     this.isList = $state.current.data.isList;
-    if (angular.isDefined($stateParams._id)) {
-      this.newRecord = false;
-      this.person = person.data;
-    }
-
     this.value = false;
     this.search = false;
     this.superhero = [];
@@ -28,40 +23,21 @@ export default class ContactsCtrl {
       captionIconCls: 'myCaption',
     };
 
-    this.getContacts = () => {
-      this.ContactServices.find()
-        .then((res) => {
-          this.contacts = res.data;
-        }, this.handleError);
-    };
+    if (angular.isDefined($stateParams._id)) {
+      this.newRecord = false;
+      this.person = person.data;
+    }
 
-    this.getConFav = () => {
-      this.ContactServices.findFav()
-        .then((res) => {
-          this.confav = res.data;
-        }, (res) => {
-          if (res.status === 404) {
-            this.$log.log('You have no favorite contact');
-          } else {
-            this.$log.log(res);
-          }
-        });
-    };
+    if (this.isList) {
+      this.contacts = getContacts.data;
+      this.confav = getConFav.data;
+    }
 
     // Always on top when state change
     $rootScope.$on('$stateChangeSuccess', () => {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     });
-
-    this.$rootScope.$on('findContacts', () => {
-      this.getContacts();
-      this.getConFav();
-    });
-
-    if (this.isList) {
-      this.$rootScope.$emit('findContacts', {});
-    }
   }
 
   // Remove Method by {_id}
@@ -82,8 +58,7 @@ export default class ContactsCtrl {
               .position(this.position)
               .hideDelay(3000)
             );
-        }, this.handleError)
-        .finally(this.$rootScope.$emit('findContacts', {}));
+        }, this.handleError);
     });
   }
 
@@ -108,8 +83,7 @@ export default class ContactsCtrl {
                 .position(position)
                 .hideDelay(3000)
               );
-          }, this.handleError)
-          .finally(this.$rootScope.$emit('findContacts', {}));
+          }, this.handleError);
       });
     } else {
       ContactServices.insert(contact)
@@ -121,8 +95,7 @@ export default class ContactsCtrl {
               .position(position)
               .hideDelay(3000)
             );
-        }, this.handleError)
-        .finally(this.$rootScope.$emit('findContacts', {}));
+        }, this.handleError);
     }
   }
 
@@ -141,8 +114,7 @@ export default class ContactsCtrl {
                 .hideDelay(3000)
               );
             $state.go('contacts.list');
-          }, this.handleError)
-          .finally(this.$rootScope.$emit('findContacts', {}));
+          }, this.handleError);
       });
     } else {
       ContactServices.update(person)
@@ -154,8 +126,7 @@ export default class ContactsCtrl {
               .position(position)
               .hideDelay(3000)
             );
-        }, this.handleError)
-        .finally(this.$rootScope.$emit('findContacts', {}));
+        }, this.handleError);
     }
   }
 
@@ -302,6 +273,8 @@ ContactsCtrl.$inject = [
   '$state',
   'ContactServices',
   'person',
+  'getContacts',
+  'getConFav',
   '$mdToast',
   '$log',
   '$mdDialog',
