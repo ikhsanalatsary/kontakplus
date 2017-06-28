@@ -5,7 +5,8 @@
     "browser": true,
     "node": true,
     "mocha": true,
-    "es6": true
+    "es6": true,
+    "commonjs": true
   },
   "plugins": [
     "import"
@@ -15,10 +16,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "strict": [
-      "error",
-      "global"
-    ],
+    "strict": "off",
     "arrow-parens": [
       "error",
       "always"

@@ -89,11 +89,11 @@ routes.$inject = [
   '$mdThemingProvider',
 ];
 
-function person(ContactServices, $stateParams) {
-  return ContactServices.findOne($stateParams._id);
+function person(ContactServices, $transition$) {
+  return ContactServices.findOne($transition$.params()._id);
 }
 
-person.$inject = ['ContactServices', '$stateParams'];
+person.$inject = ['ContactServices', '$transition$'];
 
 function getContacts(ContactServices) {
   return ContactServices.find();

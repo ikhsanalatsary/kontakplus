@@ -32,12 +32,6 @@ export default class ContactsCtrl {
       this.contacts = getContacts.data;
       this.confav = getConFav.data;
     }
-
-    // Always on top when state change
-    $rootScope.$on('$stateChangeSuccess', () => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    });
   }
 
   // Remove Method by {_id}
@@ -51,14 +45,14 @@ export default class ContactsCtrl {
     this.$mdDialog.show(confirm).then(() => {
       this.ContactServices.delete(contactId)
         .then(() => {
-          this.$state.go('contacts.list');
           this.$mdToast.show(
             this.$mdToast.simple()
               .textContent('Successfully deleted')
               .position(this.position)
               .hideDelay(3000)
             );
-        }, this.handleError);
+        }, this.handleError)
+        .finally(this.$state.go('contacts.list'));
     });
   }
 
@@ -236,10 +230,12 @@ export default class ContactsCtrl {
                     .position(this.position)
                     .hideDelay(1000)
                   );
-                this.$state.reload();
               }
             })
-            .finally(() => (this.superhero = []));
+            .finally(() => {
+              this.superhero = [];
+              this.$state.reload();
+            });
         });
       });
     }
