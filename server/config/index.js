@@ -1,6 +1,6 @@
 'use strict';
 
-const mlab = require('./config').mlab;
+const { mlab } = require('./config');
 
 module.exports = {
   getDbConnection() {

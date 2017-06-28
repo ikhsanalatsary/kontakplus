@@ -1,8 +1,11 @@
+'use strict';
+
 /* eslint-disable no-param-reassign */
-import multer from 'multer';
-import gcsSharp from 'multer-sharp';
-import Contact from '../model/contacts.model';
-import config from '../config';
+const { promisify } = require('util');
+const multer = require('multer');
+const gcsSharp = require('multer-sharp');
+const Contact = require('../model/contacts.model');
+const config = require('../config');
 
 const storage = gcsSharp({
   bucket: config.uploads.gcsUpload.bucket,
@@ -15,75 +18,84 @@ const storage = gcsSharp({
   max: true,
 });
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   const body = req.body;
   const contact = new Contact(body);
-
-  contact.save((err) => {
-    if (err) return handleError(res, err);
+  try {
+    await contact.save();
     return res.sendStatus(200);
-  });
+  } catch (e) {
+    return handleError(res, e);
+  }
 };
 
-exports.show = (req, res) => {
+exports.show = async (req, res) => {
   const contactId = req.params.id;
-  Contact.findById(contactId, (err, contact) => {
-    if (err) return res.status(400).json(err);
+  try {
+    const contact = await Contact.findById(contactId);
     return res.status(200).json(contact);
-  });
+  } catch (e) {
+    return res.status(400).json(e);
+  }
 };
 
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
   const query = {};
   if (req.query.favorite) query.favorite = Boolean(req.query.favorite);
 
-  Contact.find(query, null, { sort: { name: 1 } }, (err, contacts) => {
-    if (err) return res.sendStatus(404);
+  try {
+    const contacts = await Contact.find(query, null, { sort: { name: 1 } });
     if (contacts.length === 0) return res.sendStatus(404);
     return res.status(200).json(contacts);
-  });
+  } catch (e) {
+    return res.sendStatus(400);
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const body = req.body;
-  Contact.findById(req.params.id, (err, contact) => {
+  const contactId = req.params.id;
+  try {
+    let contact = await Contact.findById(contactId);
     contact = Object.assign(contact, body);
-    contact.save((err, result) => {
-      if (err) return res.status(400).json(err);
-      return res.status(200).json(result);
-    });
-  });
+    const result = await contact.save();
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(400).json(e);
+  }
 };
 
-exports.delete = (req, res) => {
-  Contact.remove({ _id: req.params.id }, (err) => {
-    if (err) return res.sendStatus(400);
+exports.deletes = async (req, res) => {
+  try {
+    await Contact.remove({ _id: req.params.id });
     return res.sendStatus(200);
-  });
+  } catch (e) {
+    return res.sendStatus(400);
+  }
 };
 
-exports.patch = (req, res) => {
-  Contact.findById(req.params.id, (err, contact) => {
+exports.patch = async (req, res) => {
+  try {
+    const contact = await Contact.findById(req.params.id);
     contact.favorite = req.body.favorite;
     if (req.body.name) contact.name = req.body.name;
-
-    contact.save((err, result) => {
-      if (err) return res.json(400, err);
-      return res.status(200).json(result);
-    });
-  });
+    const result = await contact.save();
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.json(400, e);
+  }
 };
 
-exports.upload = (req, res) => {
+exports.upload = async (req, res) => {
   // upload here
   const upload = multer({ storage }).single('avatar');
-  upload(req, res, (uploadError) => {
-    if (uploadError) {
-      res.status(400).json({ message: 'Something was wrong while upload' });
-      return;
-    }
+  const uploadAsync = promisify(upload);
+  try {
+    await uploadAsync(req, res);
     res.json({ avatar: req.file.path });
-  });
+  } catch (e) {
+    res.status(400).json({ message: 'Something was wrong while upload' });
+  }
 };
 
 function handleError(res, err) {

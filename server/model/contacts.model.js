@@ -1,8 +1,10 @@
-import mongoose from 'mongoose';
+'use strict';
+
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const contactSchema = new Schema({
+const ContactSchema = new Schema({
   name: { type: String, required: true, default: '' },
   title: { type: String, default: '' },
   email: { type: Array, default: [] },
@@ -15,13 +17,13 @@ const contactSchema = new Schema({
   updated: Date,
 });
 
-contactSchema
+ContactSchema
   .pre('save', function pre(next) {
     if (this.isNew) return next();
     this.updated = Date.now();
     return next();
   });
 
-const Contacts = mongoose.model('Contacts', contactSchema);
+const Contact = mongoose.model('Contacts', ContactSchema);
 
-module.exports = Contacts;
+module.exports = Contact;

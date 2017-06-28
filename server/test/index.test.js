@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
-import { expect } from 'chai';
-import request from 'supertest';
-import btoa from 'btoa';
-import faker from 'Faker';
-import titlegen from 'titlegen';
-import config from '../config';
-import Contact from '../model/contacts.model';
-import { admin } from '../config/config.json';
+const mongoose = require('mongoose');
+const { expect } = require('chai');
+const request = require('supertest');
+const btoa = require('btoa');
+const faker = require('Faker');
+const titlegen = require('titlegen');
+const config = require('../config');
+const Contact = require('../model/contacts.model');
+const { admin } = require('../config/config.json');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.getDbConnection());

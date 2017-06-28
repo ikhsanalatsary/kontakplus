@@ -1,11 +1,15 @@
-import bodyParser from 'body-parser';
-import compression from 'compression';
-import path from 'path';
-import express from 'express';
-import morgan from 'morgan';
-import mongoose from 'mongoose';
-import errorhandler from 'errorhandler';
-import config from './config';
+'use strict';
+
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const cors = require('cors');
+const path = require('path');
+const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const errorhandler = require('errorhandler');
+const config = require('./config');
+const routes = require('./routes');
 
 // Mongodb Connection
 mongoose.Promise = global.Promise;
@@ -19,13 +23,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(compression());
+app.use(cors());
 app.set('PORT', process.env.PORT || 3000);
 
 const clientPath = path.join(__dirname, '/../client');
 if (process.env.NODE_ENV === 'development') app.use(errorhandler());
 app.use(express.static(clientPath));
 app.get('/contacts/*', (req, res) => res.sendFile(path.join(__dirname, '/../client/index.html')));
-app.use('/api/contacts', require('./routes'));
+app.use('/api/contacts', routes);
 
 app.listen(app.get('PORT'), () => {
   console.log(`Our app listening on port ${app.get('PORT')}!`); // eslint-disable-line no-console

@@ -1,4 +1,6 @@
-import auth from 'basic-auth';
+'use strict';
+
+const auth = require('basic-auth');
 const admin = require('./config/config').admin;
 
 const basicAuth = (req, res, next) => {

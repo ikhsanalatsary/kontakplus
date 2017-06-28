@@ -1,16 +1,18 @@
-import { Router } from 'express';
-import basicAuth from './middleware';
-import controller from './controller/contacts.controller';
+'use strict';
+
+const { Router } = require('express');
+const basicAuth = require('./middleware');
+const { create, deletes, index, patch, show, update, upload } = require('./controller/contacts.controller');
 
 const router = Router();
 
 router.use(basicAuth);
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.post('/upload', controller.upload);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.patch);
-router.delete('/:id', controller.delete);
+router.get('/', index);
+router.get('/:id', show);
+router.post('/', create);
+router.post('/upload', upload);
+router.put('/:id', update);
+router.patch('/:id', patch);
+router.delete('/:id', deletes);
 
 module.exports = router;
