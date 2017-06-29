@@ -6,10 +6,15 @@ const cors = require('cors');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const errorhandler = require('errorhandler');
 const config = require('./config');
 const routes = require('./routes');
+
+const corsConfig = {
+  origin: process.env.NODE_ENV === 'production' ? ['https://kontakplus.herokuapp.com', 'https://kontakplus.now.sh'] : '*',
+};
 
 // Mongodb Connection
 mongoose.Promise = global.Promise;
@@ -19,11 +24,12 @@ mongoose.connect(config.getDbConnection())
 
 // Application setup.
 const app = express();
+app.use(helmet());
+app.use(cors(corsConfig));
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'tiny'));
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('dev'));
-app.use(compression());
-app.use(cors());
 app.set('PORT', process.env.PORT || 3000);
 
 const clientPath = path.join(__dirname, '/../client');
