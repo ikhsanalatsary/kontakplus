@@ -100,6 +100,13 @@ module.exports = (function makeWebpackConfig() {
 			// Minify all javascript, switch loaders to minimizing mode
 			new webpack.optimize.UglifyJsPlugin(),
 
+			// Reference: https://github.com/ampedandwired/html-webpack-plugin
+			// Render index.html
+			new HtmlWebpackPlugin({
+				template: './client/index.html',
+				inject: 'body',
+			}),
+
 			// Copy assets from the public folder
 			// Reference: https://github.com/kevlened/copy-webpack-plugin
 			new CopyWebpackPlugin([
@@ -114,7 +121,7 @@ module.exports = (function makeWebpackConfig() {
         filename: 'precache-sw.js',
         minify: true,
         navigateFallback: PUBLIC_PATH,
-        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+        staticFileGlobsIgnorePatterns: [/\.map$/, /.DS_Store/, /.json/, /asset-manifest\.json$/],
       }
     )
     );
