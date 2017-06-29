@@ -8,65 +8,11 @@ Demo App [Kontakplus in heroku] or [Kontakplus in zeit]
 
 ### Todo
 
-* Buat Testing di client
-
-### Depedencies
-
-* Angular
-* Angular-Animate
-* Angular-Aria
-* Angular-Material
-* Angular-Messages
-* Angular-Sanitize
-* Angular-UI-Router
-* Basic-Auth
-* Body-Parser
-* Btoa
-* checklist-model
-* compression
-* errorhandler
-* Express
-* lf-ng-md-file-input
-* Lodash
-* Mongoose
-* Morgan
-* Multer
-* Sweetalert
-* akan ada lagi..
-
-### Dev-Depedencies
-* Faker
-* Angular Mocks
-* Babel-cli
-* Babel-Preset-Es2015
-* Chai
-* Copy webpack plugin
-* Css-loader
-* Extract-text-webpack-plugin
-* File-loader
-* Ghooks
-* html-webpack-plugin
-* Jasmine core
-* JSCS
-* Json-loader
-* karma
-* karma-chrome-launcher
-* karma-jasmine
-* karma-sourcemap-loader
-* Karma webpack
-* Mocha
-* Nodemon
-* Raw-loader
-* rimraf
-* Style-loader
-* Supertest
-* Titlegen
-* Webpack
-* akan ada lagi...
+* upgrade to webpack v2 (feat: code splitting)
 
 ### Installation
 
-Membutuhkan [Node.js](https://nodejs.org/) v4+ dan sintaks ES6(ECMAScript 2015) dalam hal ini menggunakan Babel sebagai transpiler language. di lokal repositori menggunakan node versi 6.5.0 yang lebih banyak support ES6.
+Membutuhkan [Node.js](https://nodejs.org/) v7+ dan sintaks ES6(ECMAScript 2015) pada client dalam hal ini menggunakan Babel sebagai transpiler & webpack sebagai bundle tool. Di lokal environment menggunakan node versi 8.0.0 yang lebih banyak support ES6 & ES7 (async function & new feature NodeJS API).
 
 Install dependencies dan devDependencies dan jalankan server.
 
@@ -82,7 +28,7 @@ $ npm run dev
 $ cd nodejs-problemset
 $ npm install -d atau npm i
 $ npm run build
-$ node dist/server
+$ npm start
 ```
 
 
