@@ -5,7 +5,7 @@
       <md-button ng-click="vm.goBack()" class="md-tools mini" aria-label="Go Back">
         <md-icon md-font-set="material-icons">arrow_back</md-icon>
       </md-button>
-      <h2 md-header-title flex>Edit {{vm.person.name}}</h2>
+      <h2 md-header-title flex>Edit {{vm.contact.name}}</h2>
       <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.updateContact()">
         <md-icon md-font-set="material-icons">save</md-icon></md-button>
     </div>
@@ -17,18 +17,18 @@
       <md-input-container class="md-block">
         <label>Name</label>
         <md-icon md-font-set="material-icons">person</md-icon>
-        <input name="name" ng-model="vm.person.name">
+        <input name="name" ng-model="vm.contact.name">
       </md-input-container>
 
       <!-- title input -->
       <md-input-container class="md-block">
         <label>Title</label>
         <md-icon md-font-set="material-icons">title</md-icon>
-        <input ng-model="vm.person.title">
+        <input ng-model="vm.contact.title">
       </md-input-container>
 
       <!-- phone input -->
-      <div layout="row" ng-repeat="phone in vm.person.phone">
+      <div layout="row" ng-repeat="phone in vm.contact.phone">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">phone</md-icon>
@@ -56,7 +56,7 @@
       </div>
 
       <!-- email input -->
-      <div layout="row" ng-repeat="e in vm.person.email">
+      <div layout="row" ng-repeat="e in vm.contact.email">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">email</md-icon>
@@ -84,7 +84,7 @@
       </div>
 
       <!-- address input -->
-      <div layout="row" ng-repeat="alm in vm.person.address">
+      <div layout="row" ng-repeat="alm in vm.contact.address">
         <md-input-container flex="50">
           <label></label>
           <md-icon md-font-set="material-icons">room</md-icon>
@@ -115,7 +115,7 @@
       <md-input-container class="md-block">
         <label>Company</label>
         <md-icon md-font-set="material-icons">work</md-icon>
-        <input ng-model="vm.person.company">
+        <input ng-model="vm.contact.company">
       </md-input-container>
 
       <!-- upload -->
@@ -123,13 +123,14 @@
         <div flex="50">
           <md-icon md-font-set="material-icons">photo_camera</md-icon>
           <md-card>
-            <img ng-src="{{vm.person.avatar || 'uploads/default-img.png'}}" alt="" />
+            <img ng-src="{{vm.contact.avatar || 'uploads/default-img.png'}}" alt="" />
           </md-card>
         </div>
 
         <md-input-container class="md-block" flex="50">
           <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
-            lf-placeholder="Choose avatar" lf-browse-label="Change" lf-option="vm.option" preview></lf-ng-md-file-input>
+            lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option" preview
+            submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
         </md-input-container>
       </div>
 
@@ -281,7 +282,8 @@
 
       <md-input-container class="md-block">
         <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
-          lf-placeholder="Choose avatar" lf-browse-label="Change" lf-option="vm.option" preview></lf-ng-md-file-input>
+          lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option" preview
+          submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
       </md-input-container>
 
       <div></div>

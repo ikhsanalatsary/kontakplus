@@ -3,8 +3,9 @@ const Base64Str = btoa(`${admin.user}:${admin.password}`);
 const headers = { Authorization: `Basic ${Base64Str}` };
 
 export default class ContactServices {
-  constructor($http) {
+  constructor($http, $q) {
     this.$http = $http;
+    this.$q = $q;
     this.api = '/api/contacts/';
   }
 
@@ -21,7 +22,23 @@ export default class ContactServices {
   }
 
   // DELETE method
-  delete(contactId) {
+  delete(value) {
+    if (angular.isArray(value) && value.length > 0) {
+      const contactIds = value;
+      const deferred = this.$q.defer();
+      contactIds.forEach((contactId) => {
+        this.$http
+          .delete(this.api + contactId, { headers })
+          .then((res) => {
+            if (res.status === 200) {
+              deferred.resolve(res);
+            }
+          })
+          .catch(deferred.reject);
+      });
+      return deferred.promise;
+    }
+    const contactId = value;
     return this.$http.delete(this.api + contactId, { headers });
   }
 
@@ -61,4 +78,4 @@ export default class ContactServices {
   }
 }
 
-ContactServices.$inject = ['$http'];
+ContactServices.$inject = ['$http', '$q'];

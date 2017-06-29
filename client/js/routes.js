@@ -36,7 +36,7 @@ function routes($stateProvider, $locationProvider, $urlRouterProvider, $mdThemin
       url: '/:_id',
       template: require('../contacts.detail.html'),
       controller: 'ContactsCtrl',
-      controllerAs: 'contact',
+      controllerAs: 'vm',
       resolve: {
         person,
         getContacts: angular.noop,

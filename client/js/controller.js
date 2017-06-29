@@ -1,7 +1,7 @@
 export default class ContactsCtrl {
-  constructor($rootScope, $stateParams, $state, ContactServices, person, getContacts, getConFav, $mdToast, $log, $mdDialog) {
+  constructor($rootScope, $transition$, $state, ContactServices, person, getContacts, getConFav, $mdToast, $log, $mdDialog) {
     this.$rootScope = $rootScope;
-    this.$stateParams = $stateParams;
+    this.$stateParams = $transition$.params();
     this.ContactServices = ContactServices;
     this.$state = $state;
     this.$mdToast = $mdToast;
@@ -18,15 +18,31 @@ export default class ContactsCtrl {
     this.contact.phone = [{ option: 'Mobile' }];
     this.contact.email = [{ option: 'Personal' }];
     this.contact.address = [{ option: 'Home' }];
+    this.uploadLabel = 'Browse';
     this.option = {
       browseIconCls: 'myBrowse',
       captionIconCls: 'myCaption',
     };
 
-    if (angular.isDefined($stateParams._id)) {
+    if (angular.isDefined(this.$stateParams._id)) {
       this.newRecord = false;
-      this.person = person.data;
+      this.uploadLabel = 'Change';
+      this.contact = person.data;
     }
+
+    this.onSubmitClick = (files) => {
+      if (angular.isArray(files) && files.length > 0) {
+        ContactServices.upload(files).then((res) => {
+          this.contact.avatar = res.data.avatar;
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent('Successfully Uploaded')
+              .position(this.position)
+              .hideDelay(1000)
+            );
+        }, this.handleError);
+      }
+    };
 
     if (this.isList) {
       this.contacts = getContacts.data;
@@ -63,65 +79,33 @@ export default class ContactsCtrl {
 
   // Submit Contact method
   addContact() {
-    const { ContactServices, $state, contact, files, $mdToast, position } = this;
+    const { ContactServices, $state, contact, $mdToast, position } = this;
     if (!angular.isDefined(contact.name)) return;
-    if (angular.isArray(files) && files.length > 0) {
-      ContactServices.upload(files).then((res) => {
-        contact.avatar = res.data.avatar;
-        ContactServices.insert(contact)
-          .then(() => {
-            $state.go('contacts.list');
-            $mdToast.show(
-              $mdToast.simple()
-                .textContent('Successfully created')
-                .position(position)
-                .hideDelay(3000)
-              );
-          }, this.handleError);
-      });
-    } else {
-      ContactServices.insert(contact)
-        .then(() => {
-          $state.go('contacts.list');
-          $mdToast.show(
-            $mdToast.simple()
-              .textContent('Successfully created')
-              .position(position)
-              .hideDelay(3000)
-            );
-        }, this.handleError);
-    }
+    ContactServices.insert(contact)
+      .then(() => {
+        $state.go('contacts.list');
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Successfully created')
+            .position(position)
+            .hideDelay(3000)
+          );
+      }, this.handleError);
   }
 
   // Update Contact method
   updateContact() {
-    const { ContactServices, $state, person, files, $mdToast, position } = this;
-    if (angular.isArray(files) && files.length > 0) {
-      ContactServices.upload(files).then((res) => {
-        person.avatar = res.data.avatar;
-        ContactServices.update(person)
-          .then(() => {
-            $mdToast.show(
-              $mdToast.simple()
-                .textContent('Successfully updated')
-                .position(position)
-                .hideDelay(3000)
-              );
-            $state.go('contacts.list');
-          }, this.handleError);
-      });
-    } else {
-      ContactServices.update(person)
-        .then(() => {
-          $state.go('contacts.list');
-          $mdToast.show(
-            $mdToast.simple()
-              .textContent('Successfully updated')
-              .position(position)
-              .hideDelay(3000)
-            );
-        }, this.handleError);
-    }
+    const { ContactServices, $state, contact, $mdToast, position } = this;
+    ContactServices.update(contact)
+      .then(() => {
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Successfully updated')
+            .position(position)
+            .hideDelay(3000)
+          );
+        $state.go('contacts.list');
+      }, this.handleError);
   }
 
   // Set favorite method
@@ -220,23 +204,21 @@ export default class ContactsCtrl {
         .cancel('Cancel');
 
       this.$mdDialog.show(confirm).then(() => {
-        arr.forEach((contactId) => {
-          this.ContactServices.delete(contactId)
-            .then((res) => {
-              if (res.status === 200) {
-                $mdToast.show(
-                  $mdToast.simple()
-                    .textContent('Successfully deleted')
-                    .position(this.position)
-                    .hideDelay(1000)
-                  );
-              }
-            })
-            .finally(() => {
-              this.superhero = [];
-              this.$state.reload();
-            });
-        });
+        const contactIds = arr;
+        this.ContactServices.delete(contactIds)
+          .then((res) => {
+            if (res.status === 200) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Successfully deleted')
+                  .position(this.position)
+                  .hideDelay(1000)
+                );
+            }
+            return 'reload';
+          })
+          .then(this.$state.reload())
+          .finally(() => (this.superhero = []));
       });
     }
   }
@@ -265,7 +247,7 @@ export default class ContactsCtrl {
 
 ContactsCtrl.$inject = [
   '$rootScope',
-  '$stateParams',
+  '$transition$',
   '$state',
   'ContactServices',
   'person',
