@@ -5,6 +5,10 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const packageJson = require('./package.json')
+
+const PUBLIC_PATH = '/';  // webpack needs the trailing slash for output.publicPath
 
 /**
  * Env
@@ -68,10 +72,10 @@ module.exports = (function makeWebpackConfig() {
 		// Reference: https://github.com/ampedandwired/html-webpack-plugin
 		// Render index.html
 		config.plugins.push(
-			new HtmlWebpackPlugin({
-				template: './client/index.html',
-				inject: 'body',
-			}),
+			// new HtmlWebpackPlugin({
+			// 	template: './client/index.html',
+			// 	inject: 'body',
+			// }),
 
 			// Reference: https://github.com/webpack/extract-text-webpack-plugin
 			// Extract css files
@@ -100,7 +104,19 @@ module.exports = (function makeWebpackConfig() {
 			// Reference: https://github.com/kevlened/copy-webpack-plugin
 			new CopyWebpackPlugin([
 				{ from: __dirname + '/client', },
-			])
+			]),
+
+			// Generate Sw precache-sw
+			new SWPrecacheWebpackPlugin(
+      {
+        cacheId: 'packageJson.name',
+        dontCacheBustUrlsMatching: /\.\w{8}\./,
+        filename: 'precache-sw.js',
+        minify: true,
+        navigateFallback: PUBLIC_PATH,
+        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      }
+    )
     );
   }
 
