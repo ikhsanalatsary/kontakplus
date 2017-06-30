@@ -26,8 +26,7 @@ angular.module('myApp', injection)
   .service('ContactServices', ContactServices)
   .directive('scroll', ScrollDirective);
 
-function trace($trace, $transitions) {
-  $trace.enable('TRANSITION');
+function trace($transitions) {
   // Always on top when state change
   $transitions.onSuccess('*', () => {
     document.body.scrollTop = 0;
@@ -35,4 +34,4 @@ function trace($trace, $transitions) {
   });
 }
 
-trace.$inject = ['$trace', '$transitions'];
+trace.$inject = ['$transitions'];

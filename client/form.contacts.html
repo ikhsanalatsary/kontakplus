@@ -6,7 +6,7 @@
         <md-icon md-font-set="material-icons">arrow_back</md-icon>
       </md-button>
       <h2 md-header-title flex>Edit {{vm.contact.name}}</h2>
-      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.updateContact()">
+      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.saveContact()">
         <md-icon md-font-set="material-icons">save</md-icon></md-button>
     </div>
   </md-toolbar>
@@ -119,20 +119,16 @@
       </md-input-container>
 
       <!-- upload -->
-      <div layout="row">
-        <div flex="50">
-          <md-icon md-font-set="material-icons">photo_camera</md-icon>
-          <md-card>
-            <img ng-src="{{vm.contact.avatar || 'uploads/default-img.png'}}" alt="" />
-          </md-card>
-        </div>
+      <md-card flex="50">
+        <md-icon md-font-set="material-icons" ng-if="vm.contact.avatar" style="margin-right: 2px;margin-bottom: -25px;z-index: 1;">clear</md-icon>
+        <img ng-src="{{vm.contact.avatar || 'uploads/default-img.png'}}" alt="" />
+      </md-card>
 
-        <md-input-container class="md-block" flex="50">
-          <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
-            lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option" preview
-            submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
-        </md-input-container>
-      </div>
+      <md-input-container class="md-block">
+        <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
+          lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option"
+          submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
+      </md-input-container>
 
       <div></div>
 
@@ -149,7 +145,7 @@
         <md-icon md-font-set="material-icons">arrow_back</md-icon>
       </md-button>
       <h2 md-header-title flex>Add new contact</h2>
-      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.addContact()">
+      <md-button aria-label="submit" type="submit" class="md-tools mini" ng-click="vm.saveContact()">
         <md-icon md-font-set="material-icons">save</md-icon></md-button>
     </div>
   </md-toolbar>
@@ -280,11 +276,17 @@
         <input ng-model="vm.contact.company">
       </md-input-container>
 
-      <md-input-container class="md-block">
-        <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
-          lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option" preview
-          submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
-      </md-input-container>
+      <!-- upload image -->
+      <md-card flex="50">
+        <md-icon md-font-set="material-icons" ng-if="vm.contact.avatar" style="margin-right: 2px;margin-bottom: -25px;z-index: 1;">clear</md-icon>
+        <img ng-src="{{vm.contact.avatar || 'uploads/default-img.png'}}" alt="" />
+      </md-card>
+
+        <md-input-container class="md-block">
+          <lf-ng-md-file-input aria-label="imageupload" lf-files="vm.files" accept="image/*"
+            lf-placeholder="Choose avatar" lf-browse-label="{{vm.uploadLabel}}" lf-option="vm.option"
+            submit lf-on-submit-click="vm.onSubmitClick"></lf-ng-md-file-input>
+        </md-input-container>
 
       <div></div>
 
