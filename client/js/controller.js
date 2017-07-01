@@ -15,9 +15,9 @@ export default class ContactsCtrl {
     this.search = false;
     this.superhero = [];
     this.contact = {};
-    this.contact.phone = [{ option: 'Mobile' }];
-    this.contact.email = [{ option: 'Personal' }];
-    this.contact.address = [{ option: 'Home' }];
+    this.contact.phone = this.contact.phone || [{ option: 'Mobile' }];
+    this.contact.email = this.contact.email || [{ option: 'Personal' }];
+    this.contact.address = this.contact.address || [{ option: 'Home' }];
     this.uploadLabel = 'Browse';
     this.option = {
       browseIconCls: 'myBrowse',
@@ -80,13 +80,19 @@ export default class ContactsCtrl {
   // Submit Contact method
   saveContact() {
     const { ContactServices, $state, contact, $mdToast, position, newRecord } = this;
+    let createOrUpdate = 'insert';
+    let createdOrUpdated = 'created';
+    if (!newRecord) {
+      createOrUpdate = 'update';
+      createdOrUpdated = 'updated';
+    }
     if (!angular.isDefined(contact.name)) return;
-    ContactServices[newRecord ? 'insert' : 'update'](contact)
+    ContactServices[createOrUpdate](contact)
       .then(() => {
         $state.go('contacts.list');
         $mdToast.show(
           $mdToast.simple()
-            .textContent(`Successfully ${newRecord ? 'created' : 'updated'}`)
+            .textContent(`Successfully ${createdOrUpdated}`)
             .position(position)
             .hideDelay(3000)
           );

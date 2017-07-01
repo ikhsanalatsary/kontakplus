@@ -1,6 +1,3 @@
-import 'angular-material/angular-material.min.css';
-import 'lf-ng-md-file-input/dist/lf-ng-md-file-input.min.css';
-
 import angular from 'angular';
 import uirouter from '@uirouter/angularjs';
 import angularAnimate from 'angular-animate';
