@@ -30,7 +30,7 @@
     "body-parser": "1.18.2",
     "btoa": "1.1.2",
     "checklist-model": "0.11.0",
-    "compression": "1.6.2",
+    "compression": "1.7.0",
     "cors": "2.8.3",
     "errorhandler": "1.5.0",
     "express": "4.15.5",
