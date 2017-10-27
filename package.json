@@ -25,7 +25,7 @@
     "angular-messages": "1.6.4",
     "angular-sanitize": "1.6.4",
     "basic-auth": "1.1.0",
-    "body-parser": "1.17.2",
+    "body-parser": "1.18.2",
     "btoa": "1.1.2",
     "checklist-model": "0.11.0",
     "compression": "1.7.1",
