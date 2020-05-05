@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.1
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -9,3 +9,6 @@ patch:
   'npm:request:20160119':
     - multer-sharp > @google-cloud/storage > @google-cloud/common > log-driver > codecov.io > request:
         patched: '2018-02-13T06:48:45.686Z'
+  SNYK-JS-LODASH-567746:
+    - lodash:
+        patched: '2020-05-05T01:01:41.768Z'
